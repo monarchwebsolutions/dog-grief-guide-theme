@@ -332,7 +332,6 @@
             },
             "giftnote_engine_for_gifting_button_mzgTEK": {
               "type": "shopify://apps/giftnote-engine-for-gifting/blocks/button/37eb4f2f-4979-41f3-a677-fa25a2a97659",
-              "disabled": true,
               "settings": {
                 "add_label": "Add a gift message 🎁",
                 "edit_label": "Edit gift message 🎁",

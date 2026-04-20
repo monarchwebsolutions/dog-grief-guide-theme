@@ -382,7 +382,7 @@
       },
       "custom_css": [
         "#to_message {background: red;}",
-        ".addToCartButton{display:none;}"
+        ".add-to-cart-button {display: none;}"
       ],
       "settings": {
         "content_width": "content-center-aligned",

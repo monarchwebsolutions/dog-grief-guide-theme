@@ -381,7 +381,6 @@
         }
       },
       "custom_css": [
-        "#to_message {background: red;}",
         ".add-to-cart-button {display: none;}"
       ],
       "settings": {

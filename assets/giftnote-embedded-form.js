@@ -16,6 +16,8 @@ class GiftnoteEmbeddedForm extends HTMLElement {
     if (this.dataset.initialized === 'true') return;
     this.dataset.initialized = 'true';
 
+    this.modeInputs = Array.from(this.querySelectorAll('[data-ref="mode"]'));
+    this.panel = this.querySelector('[data-ref="panel"]');
     this.toInput = this.querySelector('[data-ref="to"]');
     this.messageInput = this.querySelector('[data-ref="message"]');
     this.messageCount = this.querySelector('[data-ref="messageCount"]');
@@ -27,22 +29,33 @@ class GiftnoteEmbeddedForm extends HTMLElement {
     this.defaultMethod = this.dataset.defaultMethod || 'tracked';
     this.defaultFrom = this.dataset.defaultFrom || '';
 
+    this.modeInputs.forEach((field) => field?.addEventListener('change', this.handleModeChange));
     [this.toInput, this.messageInput, this.emailInput].forEach((field) =>
       field?.addEventListener('input', this.handleInput)
     );
 
-    if (this.toInput) this.toInput.required = true;
-    if (this.emailInput) this.emailInput.required = true;
-
     this.updateCharacterCount();
+    this.updateModeState();
     this.syncHiddenFields();
   }
 
   disconnectedCallback() {
+    this.modeInputs.forEach((field) => field?.removeEventListener('change', this.handleModeChange));
     [this.toInput, this.messageInput, this.emailInput].forEach((field) =>
       field?.removeEventListener('input', this.handleInput)
     );
   }
+
+  get giftingEnabled() {
+    return this.modeInputs.find((field) => field.checked)?.value === 'gift';
+  }
+
+  handleModeChange = () => {
+    this.clearStatus();
+    this.clearValidation();
+    this.updateModeState();
+    this.syncHiddenFields();
+  };
 
   handleInput = () => {
     this.clearStatus();
@@ -54,6 +67,20 @@ class GiftnoteEmbeddedForm extends HTMLElement {
   updateCharacterCount() {
     if (!this.messageInput || !this.messageCount) return;
     this.messageCount.textContent = `${this.messageInput.value.length}/${this.messageInput.maxLength}`;
+  }
+
+  updateModeState() {
+    if (this.panel) {
+      this.panel.hidden = !this.giftingEnabled;
+    }
+
+    if (this.toInput) {
+      this.toInput.required = this.giftingEnabled;
+    }
+
+    if (this.emailInput) {
+      this.emailInput.required = this.giftingEnabled;
+    }
   }
 
   clearValidation() {
@@ -73,6 +100,10 @@ class GiftnoteEmbeddedForm extends HTMLElement {
   }
 
   getPayload() {
+    if (!this.giftingEnabled) {
+      return GIFTFORM_FIELDS.reduce((attributes, key) => ({ ...attributes, [key]: '' }), {});
+    }
+
     return {
       giftnote_to: this.toInput?.value.trim() || '',
       giftnote_from: this.defaultFrom,
@@ -94,11 +125,13 @@ class GiftnoteEmbeddedForm extends HTMLElement {
       if (!key) return;
 
       field.value = payload[key] || '';
-      field.disabled = false;
+      field.disabled = !this.giftingEnabled;
     });
   };
 
   validate() {
+    if (!this.giftingEnabled) return true;
+
     this.clearValidation();
 
     if (this.toInput && !this.toInput.value.trim()) {

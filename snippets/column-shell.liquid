@@ -1,0 +1,36 @@
+{% assign has_html = html != blank %}
+{% assign has_image = image != blank %}
+
+{% capture image_markup %}
+  {% if has_image %}
+    <div
+      class="column-image"
+      style="
+        padding-top: {{ img_pt }}px;
+        padding-right: {{ img_prl }}px;
+        padding-left: {{ img_prl }}px;
+        padding-bottom: {{ img_pb }}px;
+      "
+    >
+      {{ image | image_url: width: 1600 | image_tag: loading: 'lazy' }}
+    </div>
+  {% endif %}
+{% endcapture %}
+
+{% capture html_markup %}
+  {% if has_html %}
+    <div class="column-html">
+      {{ html }}
+    </div>
+  {% endif %}
+{% endcapture %}
+
+<div class="column-stack">
+  {% if image_first == 'image_first' %}
+    {{ image_markup }}
+    {{ html_markup }}
+  {% else %}
+    {{ html_markup }}
+    {{ image_markup }}
+  {% endif %}
+</div>

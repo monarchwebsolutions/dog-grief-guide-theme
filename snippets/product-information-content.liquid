@@ -1,0 +1,465 @@
+{% doc %}
+  Product Information Content
+
+  Renders the product information layout with media gallery and product details.
+  Used by both product-information and featured-product-information sections.
+
+  @param {number} product_media_size - Number of media items in the product
+  @param {string} section_id - Unique section ID
+  @param {object} settings - Section settings object
+  @param {string} media_gallery - Captured HTML for the product media gallery block
+  @param {string} product_details - Captured HTML for the product details block
+  @param {string} additional_blocks - Captured HTML for additional section blocks
+
+  @example
+  {% capture media_gallery %}
+    {% content_for 'block', type: '_product-media-gallery', id: 'media-gallery', closest.product: product %}
+  {% endcapture %}
+
+  {% capture product_details %}
+    {% content_for 'block', type: '_product-details', id: 'product-details', closest.product: product %}
+  {% endcapture %}
+
+  {% capture additional_blocks %}
+    {% content_for 'blocks' %}
+  {% endcapture %}
+
+  {% render 'product-information-content',
+    product_media_size: product.media.size,
+    section_id: section.id,
+    settings: section.settings,
+    media_gallery: media_gallery,
+    product_details: product_details,
+    additional_blocks: additional_blocks
+  %}
+{% enddoc %}
+
+{% liquid
+  # Determine render order based on media position
+  if settings.desktop_media_position == 'left'
+    assign render_order = 'media,product-details'
+  else
+    assign render_order = 'product-details,media'
+  endif
+
+  # Check if product has media
+  assign product_has_media = true
+  if product_media_size == 0
+    assign product_has_media = false
+  endif
+
+  # Build product grid class
+  assign product_grid_class = 'product-information__grid'
+
+  if product_has_media == false
+    assign product_grid_class = product_grid_class | append: ' product-information--media-none'
+  elsif settings.desktop_media_position == 'right'
+    assign product_grid_class = product_grid_class | append: ' product-information--media-right'
+  else
+    assign product_grid_class = product_grid_class | append: ' product-information--media-left'
+  endif
+
+  if settings.equal_columns
+    assign product_grid_class = product_grid_class | append: ' product-information__grid--half'
+
+    if settings.limit_details_width
+      assign product_grid_class = product_grid_class | append: ' product-information__grid--limit-details'
+    endif
+  endif
+
+  # Determine content width
+  case settings.content_width
+    when 'content-center-aligned'
+      assign content_width = 'page-width'
+    when 'content-full-width'
+      assign content_width = 'full-width'
+  endcase
+%}
+
+<div class="section-background color-{{ settings.color_scheme }}"></div>
+<div
+  class="product-information section section--{{ content_width }} spacing-style color-{{ settings.color_scheme }} relative"
+  style="{% render 'spacing-style', settings: settings %} --gap: {{ settings.gap }}px;"
+  data-testid="product-information"
+>
+  {% if settings.desktop_media_position == 'left' and product_has_media and request.page_type == 'product' %}
+    {% assign product_href = '#ProductInformation-' | append: section_id %}
+    {% render 'skip-to-content-link', href: product_href, text: 'accessibility.skip_to_product_info' %}
+  {% endif %}
+  <div
+    class="{{ product_grid_class }}"
+    data-product-grid-content
+  >
+    {% assign render_order_array = render_order | split: ',' %}
+    {% capture media %}
+      <div
+        class="product-information__media"
+        data-testid="product-information-media"
+      >
+        {{ media_gallery }}
+      </div>
+    {% endcapture %}
+
+    {% for block in render_order_array %}
+      {% if block == 'media' and product_has_media %}
+        {{ media }}
+      {% elsif block == 'product-details' %}
+        {{ product_details }}
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  {{ additional_blocks }}
+</div>
+
+<style>
+  .product-information {
+    gap: var(--gap) 0;
+  }
+
+  /* Base grid layout */
+  .product-information__grid {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+    margin-top:40px;
+  }
+
+  /* Default column positions */
+  .product-details {
+    order: 1;
+  }
+
+  .product-information__media {
+    order: 0;
+    width: 0;
+    min-width: 100%;
+  }
+
+  .product-information__media .placeholder-image {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Mobile styles */
+  @media screen and (max-width: 749px) {
+    .product-information__media {
+      {% comment %} grid-column: 1 / -1; {% endcomment %}
+    }
+    .product-information{
+      display:unset !important;
+    }
+    .product-information__grid{
+      display: flex;
+      flex-direction:column;
+    }
+    .product-details {
+      {% comment %} grid-column: 2 / 3; {% endcomment %}
+    }
+  }
+
+  /* Desktop styles */
+  @media screen and (min-width: 750px) {
+    .product-information__grid {
+      grid-column: 2;
+    }
+
+    /* Position when there is no media */
+    .product-information__grid.product-information--media-none {
+      .product-details {
+        width: var(--narrow-content-width);
+        margin: 0 auto;
+      }
+    }
+
+    /* Position when there is media */
+    .product-information__grid:not(.product-information--media-none) {
+      /* Media on the left side */
+      &.product-information--media-left {
+        grid-template-columns: 1fr min(50vw, var(--sidebar-width));
+
+        .product-information__media {
+          padding-right: 30px;
+        }
+
+        .product-details {
+          padding-left: 30px;
+        }
+
+        &:has(.media-gallery--extend) {
+          grid-column: 1 / 3;
+        }
+      }
+
+      /* Media on the right side */
+      &.product-information--media-right {
+        grid-template-columns: min(50vw, var(--sidebar-width)) 1fr;
+
+        .product-information__media {
+          padding-left: calc(var(--gap, 0) / 2);
+          order: 1;
+        }
+
+        .product-details {
+          padding-right: calc(var(--gap, 0) / 2);
+          order: 0;
+        }
+
+        &:has(.media-gallery--extend) {
+          grid-column: 2 / -1;
+        }
+      }
+
+      /* Equal width columns */
+      &.product-information__grid--half,
+      &.product-information__grid--half:has(.media-gallery--extend) {
+        grid-column: 1 / -1;
+        grid-template-columns:
+          var(--full-page-grid-margin) calc(var(--full-page-grid-central-column-width) / 2) calc(
+            var(--full-page-grid-central-column-width) / 2
+          )
+          var(--full-page-grid-margin);
+
+        &.product-information--media-left {
+          .product-information__media {
+            grid-column: 2 / 3;
+
+            &:has(.media-gallery--extend) {
+              grid-column: 1 / 3;
+            }
+          }
+
+          .product-details {
+            grid-column: 3 / 4;
+          }
+        }
+
+        &.product-information--media-right {
+          .product-information__media {
+            grid-column: 3 / 4;
+
+            &:has(.media-gallery--extend) {
+              grid-column: 3 / -1;
+            }
+          }
+
+          .product-details {
+            grid-column: 2 / 3;
+          }
+        }
+      }
+    }
+
+    /* Handle full width section */
+    .section--full-width {
+      .product-information__grid:not(.product-information--media-none) {
+        &.product-information--media-left,
+        &.product-information--media-right {
+          grid-column: 1 / -1;
+        }
+
+        &.product-information--media-left .product-details {
+          padding-inline-end: var(--padding-lg);
+        }
+
+        &.product-information--media-right .product-details {
+          padding-inline-start: var(--padding-lg);
+        }
+
+        &.product-information__grid--half.product-information--media-left {
+          .product-information__media {
+            grid-column: 1 / 3;
+          }
+
+          .product-details {
+            grid-column: 3 / -1;
+          }
+        }
+
+        &.product-information__grid--half.product-information--media-right {
+          .product-information__media {
+            grid-column: 3 / -1;
+          }
+
+          .product-details {
+            grid-column: 1 / 3;
+          }
+        }
+      }
+    }
+  }
+
+  /* Wider sidebar for large screens */
+  @media screen and (min-width: 1200px) {
+    .product-information__grid:not(
+        .product-information__grid--half,
+        .product-information--media-none
+      ).product-information--media-left {
+      grid-template-columns: 2fr 1fr;
+    }
+
+    .product-information__grid:not(
+        .product-information__grid--half,
+        .product-information--media-none
+      ).product-information--media-right {
+      grid-template-columns: 1fr 2fr;
+    }
+  }
+
+  .product-information__grid--limit-details .product-details > .group-block {
+    max-width: var(--sidebar-width);
+  }
+
+  /* If the header is sticky, make product details content stick underneath the header */
+  body:has(#header-group #header-component[data-sticky-state='active']) .product-details.sticky-content--desktop {
+    --sticky-header-offset: var(--header-height);
+  }
+
+  /* Custom Styles */
+  slideshow-arrows{
+    display:none !important;
+  }
+  .product-information,
+  .product-information__grid{
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .product-information__media{
+    grid-column: unset !important;
+  }
+  .product-details{
+    grid-column: unset !important;
+  }
+  .product-information .product-media img{
+    border-radius:16px;
+    box-shadow: 12px 12px 24px rgba(0, 0, 0, 0.1);
+  }
+  .product-details h1{
+    font-family: 'Playfair Display' !important;
+    font-weight:500 !important;
+    font-size:48px !important;
+    color:var(--dgg-black) !important;
+    padding-top: 0 !important;
+  }
+  .product-details h2{
+    font-style: italic;
+    font-size:18px;
+    color:var(--dgg-blue);
+    font-weight:500;
+  }
+  .product-brief{
+    font-size:16px;
+    color:var(--dgg-grey);
+    font-weight:500;
+  }
+  .product-details > .group-block{
+    padding-top:40px !important;
+  }
+  .product-information .product-details product-price{
+    margin-bottom:8px;
+  }
+  .product-information .product-details .price{
+    font-family: 'Playfair Display';
+    font-size: 30px;
+    color:var(--dgg-black);
+    font-weight:500;
+  }
+  .shopify-payment-button__button--unbranded {
+    font-size:18px !important;
+    padding:10px 48px !important;
+    background: var(--dgg-blue) !important;
+    height:unset;
+    max-height: unset;
+    border-radius: 999px;
+    min-height: unset;
+    font-weight: 600;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.03) !important;
+    transition:all 0.3s ease !important;
+  }
+  .shopify-payment-button__button--unbranded:hover{
+    background:var(--dgg-dark-blue) !important;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.12) !important;
+  }
+
+  /* heart icon */
+  .shopify-payment-button__button--unbranded::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+
+    background-color: currentColor;
+
+    mask: url('{{ "heart.svg" | asset_url }}') no-repeat center / contain;
+    -webkit-mask: url('{{ "heart.svg" | asset_url }}') no-repeat center / contain;
+
+    flex-shrink: 0;
+  }
+
+  /* What's Inside */
+  .whats-inside-container{
+    background: linear-gradient(135deg, #F5EDE4 0%, #ffffff 100%);
+    padding:32px;
+    border-radius: 16px;
+    margin-top:16px;
+  }
+  .whats-inside-container h2{
+    font-family: 'Playfair Display';
+    font-size: 20px !important;
+    font-style: normal;
+    color:var(--dgg-black) !important;
+    margin-bottom: 24px;
+  }
+  .whats-inside-icon-container{
+    width:32px;
+    height: 32px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    background: #ECE9E4;
+    border-radius: 6px;
+  }
+  .whats-inside-list{
+    display:flex;
+    gap:16px;
+    flex-direction: column;
+  }
+  .whats-inside-icon-container svg{
+    width:16px;
+    height: 16px;
+  }
+  .whats-inside-item{
+    display: flex;
+    gap:12px;
+  }
+  .whats-inside-item-text{
+    color:var(--dgg-grey);
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 16px;
+  }
+  @media screen and (max-width:749px){
+    .product-information .product-media{
+      max-width: 544px;
+      padding-left: 16px;
+      padding-right: 16px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .product-details > .group-block{
+      padding: 0 16px !important;
+    }
+    .product-details h1{
+      font-size:30px !important;
+    }
+    .shopify-payment-button__button--unbranded{
+      width:100% !important;
+    }
+    .whats-inside-container{
+      margin-bottom:48px;
+    }
+  }
+</style>

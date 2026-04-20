@@ -1,0 +1,80 @@
+<div class="page-header-container" data-aos="fade-up" data-aos-duration="1000">
+  <div class="pill-container">
+    {{ section.settings.pill_icon }}
+    <span class="pill-text">{{ section.settings.pill_text }}</span>
+  </div>
+  <h1>{{ section.settings.header_text }}</h1>
+  <p>{{ section.settings.subheader_text }}</p>
+</div>
+<style>
+  .page-header-container{
+    padding:96px 0;
+    text-align:center;
+    background: linear-gradient(180deg, #F2F0EF 0%, #FDF8F3 100%);
+  }
+  .page-header-container h1{
+    font-family: 'Playfair Display';
+    font-size:60px;
+    font-weight: 400;
+    color: var(--dgg-black);
+    margin: 24px 0;
+  }
+  .page-header-container p{
+    font-size:18px;
+    font-weight:500;
+    max-width:672px;
+    margin:auto;
+  }
+  .pill-container svg{
+    color:var(--dgg-yellow);
+  }
+  @media screen and (max-width:1023px){
+    .page-header-container{
+      padding:64px 16px;
+    }
+    .page-header-container h1{
+      font-size:48px;
+    }
+  }
+  @media screen and (max-width:749px){
+    .page-header-container h1{
+      font-size:36px;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "Page Header",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "pill_icon",
+      "label": "Pill Icon (SVG only)",
+      "info": "Paste raw SVG code. Example: <svg>...</svg>"
+    },
+    {
+      "type": "text",
+      "id": "pill_text",
+      "label": "Pill Text"
+    },
+    {
+      "type": "text",
+      "id": "header_text",
+      "label": "Header text",
+      "default": "Page Title"
+    },
+    {
+      "type": "textarea",
+      "id": "subheader_text",
+      "label": "Subheader text",
+      "default": "Supporting description goes here."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Page Header"
+    }
+  ]
+}
+{% endschema %}

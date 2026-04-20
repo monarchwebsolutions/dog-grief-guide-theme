@@ -1,0 +1,10 @@
+{%- case section.settings.content_key -%}
+  {%- when 'born-from-heartbreak' -%}
+    {% render 'born-from-heartbreak-col-2', section: section %}
+  {%- when 'whats-inside' -%}
+    {% render 'whats-inside-col-2', section: section %}
+  {%- when 'honoring-through-ritual' -%}
+    {% render 'honoring-through-ritual-col-2', section: section %}  
+  {%- else -%}
+    <!-- optional fallback -->
+{%- endcase -%}

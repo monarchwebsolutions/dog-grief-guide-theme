@@ -1,0 +1,6 @@
+{%- case section.settings.content_key -%}
+  {%- when 'whats-inside' -%}
+    {% render 'whats-inside-col-3', section: section %}
+  {%- when 'honoring-through-ritual' -%}
+    {% render 'honoring-through-ritual-col-3', section: section %}
+{%- endcase -%}

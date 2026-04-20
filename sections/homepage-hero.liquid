@@ -1,0 +1,205 @@
+<section id="section-{{ section.id }}" class="section-shell">
+  <main class="section-shell__main section--page-width" role="main">
+    <div class="section-shell__container">
+      <div class="flex">
+        <div class="flex-column-1">
+          {{ section.settings.column_1 }}
+        </div>
+
+        {% if section.settings.show_column_2 %}
+          <div class="flex-column-2">
+            {{ section.settings.column_2 }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.show_column_3 %}
+          <div class="flex-column-3">
+            {{ section.settings.column_3 }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </main>
+</section>
+
+{% style %}
+  /* Container padding (desktop-first) */
+  #section-{{ section.id }} .section-shell__container {
+    padding-top: {{ section.settings.pt_desktop }}px;
+    padding-right: {{ section.settings.prl_desktop }}px;
+    padding-left: {{ section.settings.prl_desktop }}px;
+    padding-bottom: {{ section.settings.pb_desktop }}px;
+  }
+
+  /* Flex behavior */
+  #section-{{ section.id }} .flex {
+    display: flex;
+    gap: {{ section.settings.gap_desktop }}px;
+    flex-direction: row;          /* Desktop: horizontal */
+    align-items: stretch;
+  }
+
+  #section-{{ section.id }} .flex > [class^="flex-column-"] {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  /* Mobile: <= 749px */
+  @media screen and (max-width: 749px) {
+    #section-{{ section.id }} .section-shell__container {
+      padding-top: {{ section.settings.pt_mobile }}px;
+      padding-right: {{ section.settings.prl_mobile }}px;
+      padding-left: {{ section.settings.prl_mobile }}px;
+      padding-bottom: {{ section.settings.pb_mobile }}px;
+    }
+
+    #section-{{ section.id }} .flex {
+      flex-direction: column;      /* Mobile: stacked vertically */
+      gap: {{ section.settings.gap_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Homepage Hero",
+  "tag": "section",
+  "class": "section-padding-shell",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "gap_desktop",
+      "label": "Column gap (desktop)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "label": "Column gap (mobile)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+
+    {
+      "type": "header",
+      "content": "Desktop padding (≥ 750px)"
+    },
+    {
+      "type": "range",
+      "id": "pt_desktop",
+      "label": "Top padding (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "prl_desktop",
+      "label": "Left/Right padding (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "pb_desktop",
+      "label": "Bottom padding (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+
+    {
+      "type": "header",
+      "content": "Mobile padding (≤ 749px)"
+    },
+    {
+      "type": "range",
+      "id": "pt_mobile",
+      "label": "Top padding (mobile)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "prl_mobile",
+      "label": "Left/Right padding (mobile)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "pb_mobile",
+      "label": "Bottom padding (mobile)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+
+    {
+      "type": "header",
+      "content": "Columns"
+    },
+    {
+      "type": "richtext",
+      "id": "column_1",
+      "label": "Column 1 content",
+      "default": "<p>Column 1</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_column_2",
+      "label": "Show column 2",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "column_2",
+      "label": "Column 2 content",
+      "default": "<p>Column 2</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_column_3",
+      "label": "Show column 3",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "column_3",
+      "label": "Column 3 content",
+      "default": "<p>Column 3</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Homepage Hero"
+    }
+  ]
+}
+{% endschema %}

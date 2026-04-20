@@ -1,0 +1,58 @@
+<div class="homepage-hero-col-1">
+  <h2>
+    <span class="line-1">Your grief is valid.</span><br><span class="line-2">Your love was real.</span>
+  </h2>
+  <p>
+    A healing guide for navigating the heartbreak of loss and carrying your dog's spirit forward. Because losing a dog isn't just losing a pet—it's saying goodbye to family.
+  </p>
+  <div class="cta-buttons">
+    <a href="{{ all_products['the-dog-grief-guide'].url }}" class="cta primary-cta">Shop Now</a>
+    <a href="/pages/about" class="cta secondary-cta">Our Story</a>
+  </div>
+</div>
+<style>
+  .homepage-hero-col-1 h2 {
+    font-family: "Playfair Display";
+    font-weight: 500;
+    font-size: 60px;
+    margin-bottom: 24px;
+  }
+  .homepage-hero-col-1 h2 .line-1 {
+    color: var(--dgg-black);
+  }
+  .homepage-hero-col-1 h2 .line-2 {
+    color: var(--dgg-blue);
+  }
+  .homepage-hero-col-1 p {
+    font-size: 18px;
+    margin-bottom: 32px;
+  }
+  .homepage-hero-col-1 .cta-buttons {
+    display: flex;
+    gap: 16px;
+  }
+  @media screen and (max-width:1023px){
+    .column-stack{
+      text-align:center;
+    }
+    .cta-buttons{
+      justify-content:center;
+    }
+    .homepage-hero-col-1 h2{
+      font-size:48px;
+    }
+    .homepage-hero-col-1 p{
+      max-width: 550px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  @media screen and (max-width:480px){
+    .cta-buttons{
+      flex-direction:column;
+    }
+    .homepage-hero-col-1 h2{
+      font-size:36px;
+    }
+  }
+</style>

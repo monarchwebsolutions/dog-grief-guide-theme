@@ -1,0 +1,16 @@
+{%- case section.settings.content_key -%}
+  {%- when 'homepage-hero' -%}
+    {% render 'homepage-hero-col-1', section: section %}
+  {%- when 'whats-inside' -%}
+    {% render 'whats-inside-col-1', section: section %}
+  {%- when 'a-sacred-bridge' -%}
+    {% render 'a-sacred-bridge-col-1', section: section %}
+  {%- when 'join-our-community' -%}
+    {% render 'join-our-community-col-1', section: section %}
+  {%- when 'in-loving-memory' -%}
+    {% render 'in-loving-memory-col-1', section: section %}
+  {%- when 'honoring-through-ritual' -%}
+    {% render 'honoring-through-ritual-col-1', section: section %}
+  {%- else -%}
+    <!-- optional fallback -->
+{%- endcase -%}

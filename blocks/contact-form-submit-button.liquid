@@ -1,0 +1,126 @@
+
+{%- assign block_settings = block.settings -%}
+<button
+  type="submit"
+  class="button submit-button size-style cta primary-cta"
+  style="{% render 'size-style', settings: block_settings %}"
+  {{ block.shopify_attributes }}
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send mr-2"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path><path d="m21.854 2.147-10.94 10.939"></path></svg>
+  {{ block_settings.label }}
+</button>
+
+{% stylesheet %}
+  .submit-button {
+    min-width: max-content;
+    width: 100% !important;
+    display: inline-flex !important;
+    align-items: center;
+    padding: 15px;
+    border-radius: 999px;
+    border: none;
+    background: var(--dgg-blue);
+    color: white;
+    font-size: 18px !important;
+    gap: 16px;
+    font-weight: 600;
+    width: 164px;
+    justify-content: center;
+    cursor:pointer;
+    transition: all 0.3s ease;
+    padding: 10px 32px !important;
+  }
+  .subsmit-button:hover{
+    background: var(--dgg-dark-blue);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.submit_button",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "t:settings.label",
+      "default": "t:text_defaults.contact_form_button_label"
+    },
+    {
+      "type": "select",
+      "id": "style_class",
+      "label": "t:settings.style",
+      "options": [
+        {
+          "value": "button",
+          "label": "t:options.primary"
+        },
+        {
+          "value": "button-secondary",
+          "label": "t:options.secondary"
+        }
+      ],
+      "default": "button"
+    },
+    {
+      "type": "header",
+      "content": "t:content.size"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "t:settings.width_desktop",
+      "options": [
+        {
+          "value": "fit-content",
+          "label": "t:options.fit_content"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
+        }
+      ],
+      "default": "fit-content"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "t:settings.width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "width_mobile",
+      "label": "t:settings.width_mobile",
+      "options": [
+        {
+          "value": "fit-content",
+          "label": "t:options.fit_content"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
+        }
+      ],
+      "default": "fit-content"
+    },
+    {
+      "type": "range",
+      "id": "custom_width_mobile",
+      "label": "t:settings.width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width_mobile == 'custom' }}"
+    }
+  ],
+  "presets": []
+}
+{% endschema %}

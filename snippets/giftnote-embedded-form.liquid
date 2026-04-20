@@ -1,5 +1,5 @@
 {% comment %}
-  Renders an embedded Giftnote gift form inside the product form.
+  Renders a simplified embedded Giftnote form inside the product form.
 
   Accepts:
   - product: {Object} product object
@@ -15,223 +15,90 @@
 
 {% liquid
   assign storage_mode = 'cart-attributes'
-  assign allow_tracked = true
+  assign default_method = 'tracked'
 
   if product.gift_card?
     assign storage_mode = 'line-item-properties'
-    assign allow_tracked = false
+    assign default_method = 'instant'
   endif
 %}
 
 <giftnote-embedded-form
   class="giftnote-embed"
   data-storage-mode="{{ storage_mode }}"
-  data-allow-tracked="{{ allow_tracked }}"
+  data-default-method="{{ default_method }}"
+  data-default-from="{{ shop.name | escape }}"
 >
-  <label class="giftnote-embed__toggle">
-    <input
-      type="checkbox"
-      data-ref="toggle"
-    >
-    <span class="giftnote-embed__toggle-copy">
-      <span class="giftnote-embed__toggle-title">Send this as a gift</span>
-      <span class="giftnote-embed__toggle-text">Add the recipient’s details and schedule the message.</span>
-    </span>
-  </label>
-
-  <div
-    class="giftnote-embed__panel"
-    data-ref="panel"
-    hidden
-  >
+  <div class="giftnote-embed__panel">
     <div class="giftnote-embed__header">
-      <h3 class="giftnote-embed__title">Gifting has never been easier</h3>
-      <p class="giftnote-embed__subtitle">
-        Perfect if you're short on time or unable to deliver your gift yourself. Enter your message and select when
-        to send it.
-      </p>
+      <h3 class="giftnote-embed__title">Send comfort to someone navigating the loss of their beloved companion.</h3>
     </div>
 
-    <div class="giftnote-embed__grid giftnote-embed__grid--two-up">
-      <div class="field">
-        <label
-          class="giftnote-embed__label"
-          for="Giftnote-to-{{ block.id }}"
-        >
-          To
-        </label>
-        <input
-          id="Giftnote-to-{{ block.id }}"
-          class="input"
-          type="text"
-          placeholder="Who is it for?"
-          maxlength="100"
-          autocomplete="name"
-          data-ref="to"
-        >
-      </div>
+    <div class="field">
+      <label
+        class="visually-hidden"
+        for="Giftnote-to-{{ block.id }}"
+      >
+        Recipient's name
+      </label>
+      <input
+        id="Giftnote-to-{{ block.id }}"
+        class="input giftnote-embed__input"
+        type="text"
+        placeholder="Recipient's name"
+        maxlength="100"
+        autocomplete="name"
+        data-ref="to"
+      >
+    </div>
 
-      <div class="field">
-        <label
-          class="giftnote-embed__label"
-          for="Giftnote-from-{{ block.id }}"
-        >
-          From
-        </label>
-        <input
-          id="Giftnote-from-{{ block.id }}"
-          class="input"
-          type="text"
-          placeholder="Who is this from?"
-          maxlength="100"
-          autocomplete="name"
-          data-ref="from"
-        >
-      </div>
+    <div class="field">
+      <label
+        class="visually-hidden"
+        for="Giftnote-email-{{ block.id }}"
+      >
+        Recipient's email
+      </label>
+      <input
+        id="Giftnote-email-{{ block.id }}"
+        class="input giftnote-embed__input"
+        type="email"
+        placeholder="Recipient's email"
+        inputmode="email"
+        autocomplete="email"
+        autocorrect="off"
+        autocapitalize="off"
+        data-ref="email"
+      >
     </div>
 
     <div class="field giftnote-embed__message-field">
-      <div class="giftnote-embed__label-row">
-        <label
-          class="giftnote-embed__label"
-          for="Giftnote-message-{{ block.id }}"
-        >
-          Message
-        </label>
-        <span
-          class="giftnote-embed__character-count"
-          data-ref="messageCount"
-        >
-          0/210
-        </span>
-      </div>
+      <label
+        class="visually-hidden"
+        for="Giftnote-message-{{ block.id }}"
+      >
+        Personal message
+      </label>
       <textarea
         id="Giftnote-message-{{ block.id }}"
-        class="input textarea"
+        class="input textarea giftnote-embed__input giftnote-embed__textarea"
         rows="5"
         maxlength="210"
-        placeholder="Write your message..."
+        placeholder="Personal message (optional)"
         data-ref="message"
       ></textarea>
+      <span
+        class="giftnote-embed__character-count"
+        data-ref="messageCount"
+      >
+        0/210
+      </span>
     </div>
 
-    <div class="giftnote-embed__grid giftnote-embed__grid--two-up">
-      <div class="field">
-        <label
-          class="giftnote-embed__label"
-          for="Giftnote-email-{{ block.id }}"
-        >
-          Recipient's email
-        </label>
-        <input
-          id="Giftnote-email-{{ block.id }}"
-          class="input"
-          type="email"
-          placeholder="recipient@giftnote.com"
-          inputmode="email"
-          autocomplete="email"
-          autocorrect="off"
-          autocapitalize="off"
-          data-ref="email"
-        >
-      </div>
-
-      <div class="field">
-        <label
-          class="giftnote-embed__label"
-          for="Giftnote-phone-{{ block.id }}"
-        >
-          Recipient's phone number
-        </label>
-        <input
-          id="Giftnote-phone-{{ block.id }}"
-          class="input"
-          type="tel"
-          placeholder="+1 (201) 555-0123"
-          inputmode="tel"
-          autocomplete="tel"
-          data-ref="phone"
-        >
-        <p class="giftnote-embed__hint">SMS delivery uses E.164 format. US numbers are auto-formatted to +1.</p>
-      </div>
-    </div>
-
-    <div class="giftnote-embed__timing">
-      <p class="giftnote-embed__timing-title">When should we send your message?</p>
-
-      <div
-        class="giftnote-embed__method-selector"
-        role="radiogroup"
-        aria-label="Giftnote delivery timing"
-        style="--giftnote-method-count: {% if allow_tracked %}3{% else %}2{% endif %};"
-      >
-        {% if allow_tracked %}
-          <label class="giftnote-embed__method-option">
-            <input
-              type="radio"
-              name="giftnote-method-{{ block.id }}"
-              value="tracked"
-              checked
-              data-ref="method"
-            >
-            <span>On Delivery</span>
-          </label>
-        {% endif %}
-
-        <label class="giftnote-embed__method-option">
-          <input
-            type="radio"
-            name="giftnote-method-{{ block.id }}"
-            value="instant"
-            {% unless allow_tracked %}
-              checked
-            {% endunless %}
-            data-ref="method"
-          >
-          <span>Send Now</span>
-        </label>
-
-        <label class="giftnote-embed__method-option">
-          <input
-            type="radio"
-            name="giftnote-method-{{ block.id }}"
-            value="scheduled"
-            data-ref="method"
-          >
-          <span>Send Later</span>
-        </label>
-      </div>
-
-      <div
-        class="giftnote-embed__method-note"
-        data-ref="methodNote"
-      >
-        {% if allow_tracked %}
-          Your message will be sent when your order is delivered to your shipping address.
-        {% else %}
-          Your gift message will be sent immediately after checkout.
-        {% endif %}
-      </div>
-
-      <div
-        class="field giftnote-embed__schedule-field"
-        data-ref="scheduleField"
-        hidden
-      >
-        <label
-          class="giftnote-embed__label"
-          for="Giftnote-time-{{ block.id }}"
-        >
-          Send date and time
-        </label>
-        <input
-          id="Giftnote-time-{{ block.id }}"
-          class="input"
-          type="datetime-local"
-          data-ref="time"
-        >
-      </div>
-    </div>
+    <p class="giftnote-embed__note">
+      <span class="giftnote-embed__note-icon" aria-hidden="true">✧</span>
+      <span>We'll send a beautiful email letting them know about your thoughtful gift.</span>
+    </p>
 
     <div
       class="giftnote-embed__status"
@@ -241,54 +108,14 @@
   </div>
 
   {% if storage_mode == 'line-item-properties' %}
-    <input
-      type="hidden"
-      name="properties[giftnote_to]"
-      data-hidden-field="giftnote_to"
-      disabled
-    >
-    <input
-      type="hidden"
-      name="properties[giftnote_from]"
-      data-hidden-field="giftnote_from"
-      disabled
-    >
-    <input
-      type="hidden"
-      name="properties[giftnote_message]"
-      data-hidden-field="giftnote_message"
-      disabled
-    >
-    <input
-      type="hidden"
-      name="properties[giftnote_medium]"
-      data-hidden-field="giftnote_medium"
-      disabled
-    >
-    <input
-      type="hidden"
-      name="properties[giftnote_email]"
-      data-hidden-field="giftnote_email"
-      disabled
-    >
-    <input
-      type="hidden"
-      name="properties[giftnote_phone]"
-      data-hidden-field="giftnote_phone"
-      disabled
-    >
-    <input
-      type="hidden"
-      name="properties[giftnote_method]"
-      data-hidden-field="giftnote_method"
-      disabled
-    >
-    <input
-      type="hidden"
-      name="properties[giftnote_time]"
-      data-hidden-field="giftnote_time"
-      disabled
-    >
+    <input type="hidden" name="properties[giftnote_to]" data-hidden-field="giftnote_to" disabled>
+    <input type="hidden" name="properties[giftnote_from]" data-hidden-field="giftnote_from" disabled>
+    <input type="hidden" name="properties[giftnote_message]" data-hidden-field="giftnote_message" disabled>
+    <input type="hidden" name="properties[giftnote_medium]" data-hidden-field="giftnote_medium" disabled>
+    <input type="hidden" name="properties[giftnote_email]" data-hidden-field="giftnote_email" disabled>
+    <input type="hidden" name="properties[giftnote_phone]" data-hidden-field="giftnote_phone" disabled>
+    <input type="hidden" name="properties[giftnote_method]" data-hidden-field="giftnote_method" disabled>
+    <input type="hidden" name="properties[giftnote_time]" data-hidden-field="giftnote_time" disabled>
   {% endif %}
 </giftnote-embedded-form>
 
@@ -298,202 +125,131 @@
     margin-block-end: var(--gap);
   }
 
-  .giftnote-embed__toggle {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--gap-sm);
-    padding: var(--padding-md);
-    border: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-12));
-    border-radius: 16px;
-    background: rgb(var(--color-background-rgb) / 1);
-    cursor: pointer;
-  }
-
-  .giftnote-embed__toggle input {
-    margin-top: 0.25rem;
-  }
-
-  .giftnote-embed__toggle-copy {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-  }
-
-  .giftnote-embed__toggle-title {
-    font-weight: 600;
-  }
-
-  .giftnote-embed__toggle-text {
-    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
-    font-size: var(--font-size--sm);
-  }
-
   .giftnote-embed__panel {
     display: grid;
-    gap: var(--gap);
-    margin-top: var(--gap-sm);
-    padding: clamp(1.2rem, 1.4vw, 1.5rem);
-    border: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-12));
-    border-radius: 20px;
-    background: linear-gradient(180deg, rgb(var(--color-background-rgb) / 1), rgb(var(--color-foreground-rgb) / 0.02));
+    gap: 1.6rem;
+    padding: clamp(1.5rem, 2vw, 2.2rem);
+    border-radius: 2rem;
+    background:
+      radial-gradient(circle at top center, rgb(255 255 255 / 0.7), transparent 60%),
+      linear-gradient(180deg, #f8f4ed 0%, #f6f1ea 100%);
+    box-shadow: inset 0 0 0 1px rgb(226 218 206 / 0.55);
   }
 
   .giftnote-embed__header {
     display: grid;
-    gap: var(--gap-xs);
-    padding-bottom: var(--gap-sm);
-    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-12));
-    text-align: center;
+    gap: 0.5rem;
   }
 
   .giftnote-embed__title {
     margin: 0;
-    font-size: clamp(1.5rem, 2vw, 2rem);
-    line-height: 1.15;
+    max-width: 19ch;
+    color: #67727c;
+    font-size: clamp(2rem, 3.2vw, 3.2rem);
+    line-height: 1.14;
+    font-weight: 500;
+    letter-spacing: -0.03em;
   }
 
-  .giftnote-embed__subtitle {
-    margin: 0;
-    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  .giftnote-embed__message-field {
+    position: relative;
   }
 
-  .giftnote-embed__grid {
-    display: grid;
-    gap: var(--gap-sm);
+  .giftnote-embed__input {
+    border: 2px solid #dfe5ee;
+    border-radius: 1.7rem;
+    background: #fff;
+    color: #6a7380;
+    box-shadow: 0 10px 24px rgb(220 210 196 / 0.16);
   }
 
-  .giftnote-embed__grid--two-up {
-    grid-template-columns: 1fr;
+  .giftnote-embed__input::placeholder {
+    color: #a5adba;
+    opacity: 1;
   }
 
-  .giftnote-embed__label-row {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--gap-sm);
-    margin-bottom: var(--gap-2xs);
+  .giftnote-embed__input:focus-visible {
+    border-color: #cad3de;
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(223 229 238 / 0.65);
   }
 
-  .giftnote-embed__label {
-    display: inline-block;
-    margin-bottom: var(--gap-2xs);
-    font-size: var(--font-size--sm);
-    font-weight: 600;
+  .giftnote-embed__input.input,
+  .giftnote-embed__input.textarea {
+    padding: 1.5rem 1.8rem;
+    font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+    line-height: 1.35;
   }
 
-  .giftnote-embed__message-field .giftnote-embed__label {
-    margin-bottom: 0;
+  .giftnote-embed__textarea {
+    min-height: 10rem;
+    resize: vertical;
+    padding-bottom: 2.6rem;
   }
 
   .giftnote-embed__character-count {
-    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
-    font-size: var(--font-size--xs);
-  }
-
-  .giftnote-embed__hint,
-  .giftnote-embed__method-note,
-  .giftnote-embed__status {
-    margin: 0;
-    font-size: var(--font-size--sm);
-    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
-  }
-
-  .giftnote-embed__timing {
-    display: grid;
-    gap: var(--gap-sm);
-  }
-
-  .giftnote-embed__timing-title {
-    margin: 0;
-    font-weight: 600;
-  }
-
-  .giftnote-embed__method-selector {
-    display: grid;
-    grid-template-columns: repeat(var(--giftnote-method-count, 3), minmax(0, 1fr));
-    gap: 0;
-    border: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-12));
-    border-radius: 14px;
-    overflow: hidden;
-    background: rgb(var(--color-background-rgb) / 1);
-  }
-
-  .giftnote-embed__method-option {
-    position: relative;
-    display: flex;
-  }
-
-  .giftnote-embed__method-option + .giftnote-embed__method-option {
-    border-left: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-12));
-  }
-
-  .giftnote-embed__method-option input {
     position: absolute;
-    inset: 0;
-    opacity: 0;
-    cursor: pointer;
+    right: 1.5rem;
+    bottom: 1rem;
+    color: #b2b8c2;
+    font-size: 0.9rem;
+    line-height: 1;
+    pointer-events: none;
   }
 
-  .giftnote-embed__method-option span {
+  .giftnote-embed__note {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-height: 3rem;
-    padding: var(--padding-sm) var(--padding-md);
-    font-size: var(--font-size--sm);
-    font-weight: 600;
-    text-align: center;
-    transition: background-color var(--animation-speed) var(--animation-easing),
-      color var(--animation-speed) var(--animation-easing);
+    align-items: flex-start;
+    gap: 0.8rem;
+    margin: 0;
+    color: #67727c;
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    line-height: 1.35;
+    font-weight: 500;
   }
 
-  .giftnote-embed__method-option:has(input:checked) span {
-    background: rgb(var(--color-button-primary-background-rgb) / 0.9);
-    color: rgb(var(--color-button-primary-text-rgb) / 1);
-  }
-
-  .giftnote-embed__method-option:has(input:focus-visible) {
-    outline: var(--focus-outline-width) solid var(--color-foreground);
-    outline-offset: -2px;
-    z-index: 1;
-  }
-
-  .giftnote-embed__method-note,
-  .giftnote-embed__schedule-field {
-    padding: var(--padding-md);
-    border-radius: 14px;
-    background: rgb(var(--color-foreground-rgb) / 0.03);
-  }
-
-  .giftnote-embed__schedule-field .giftnote-embed__label {
-    margin-bottom: var(--gap-2xs);
+  .giftnote-embed__note-icon {
+    color: #f0ca54;
+    font-size: 1.5rem;
+    line-height: 1;
+    transform: translateY(-0.05em);
   }
 
   .giftnote-embed__status {
-    padding: var(--padding-sm) var(--padding-md);
-    border-radius: 12px;
-    background: rgb(var(--color-foreground-rgb) / 0.05);
-  }
-
-  .giftnote-embed__status[data-status='error'] {
+    margin: 0;
+    padding: 0.9rem 1rem;
+    border-radius: 1rem;
     color: rgb(var(--color-error-rgb));
     background: rgb(var(--color-error-rgb) / 0.08);
-  }
-
-  @media screen and (min-width: 750px) {
-    .giftnote-embed__grid--two-up {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+    font-size: var(--font-size--sm);
   }
 
   @media screen and (max-width: 749px) {
-    .giftnote-embed__method-selector {
-      grid-template-columns: 1fr;
+    .giftnote-embed__panel {
+      gap: 1.1rem;
+      padding: 1.25rem;
+      border-radius: 1.5rem;
     }
 
-    .giftnote-embed__method-option + .giftnote-embed__method-option {
-      border-left: 0;
-      border-top: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-12));
+    .giftnote-embed__title {
+      max-width: none;
+      font-size: 1.9rem;
+    }
+
+    .giftnote-embed__input.input,
+    .giftnote-embed__input.textarea {
+      padding: 1.15rem 1.25rem;
+      border-radius: 1.35rem;
+    }
+
+    .giftnote-embed__textarea {
+      min-height: 8.5rem;
+      padding-bottom: 2.4rem;
+    }
+
+    .giftnote-embed__character-count {
+      right: 1.1rem;
+      bottom: 0.9rem;
     }
   }
 {% endstylesheet %}

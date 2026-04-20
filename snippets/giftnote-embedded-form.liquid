@@ -168,9 +168,9 @@
   .giftnote-embed__toggle {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.35rem;
-    margin: 0 0 1.5rem;
-    padding: 0.35rem;
+    gap: 0.28rem;
+    margin: 0 0 1.15rem;
+    padding: 0.28rem;
     border: 0;
     border-radius: 999px;
     background: linear-gradient(180deg, #f8f1e7 0%, #f3ebdf 100%);
@@ -193,13 +193,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.85rem;
+    gap: 0.65rem;
     width: 100%;
-    min-height: 4rem;
-    padding: 0.9rem 1.25rem;
+    min-height: 3.45rem;
+    padding: 0.72rem 1rem;
     border-radius: 999px;
     color: #65727d;
-    font-size: clamp(1rem, 1.7vw, 1.25rem);
+    font-size: clamp(0.94rem, 1.45vw, 1.08rem);
     font-weight: 600;
     line-height: 1;
     text-align: center;
@@ -228,8 +228,8 @@
 
   .giftnote-embed__toggle-icon {
     display: inline-flex;
-    width: 1.35rem;
-    height: 1.35rem;
+    width: 1.08rem;
+    height: 1.08rem;
   }
 
   .giftnote-embed__toggle-icon svg {
@@ -239,8 +239,8 @@
 
   .giftnote-embed__panel {
     display: grid;
-    gap: 1.6rem;
-    padding: clamp(1.5rem, 2vw, 2.2rem);
+    gap: 1.2rem;
+    padding: clamp(1.15rem, 1.5vw, 1.65rem);
     border-radius: 2rem;
     background:
       radial-gradient(circle at top center, rgb(255 255 255 / 0.7), transparent 60%),
@@ -261,8 +261,8 @@
     margin: 0;
     max-width: 19ch;
     color: #67727c;
-    font-size: clamp(2rem, 3.2vw, 3.2rem);
-    line-height: 1.14;
+    font-size: clamp(1.55rem, 2.45vw, 2.25rem);
+    line-height: 1.16;
     font-weight: 500;
     letter-spacing: -0.03em;
   }
@@ -292,23 +292,23 @@
 
   .giftnote-embed__input.input,
   .giftnote-embed__input.textarea {
-    padding: 1.5rem 1.8rem;
-    font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+    padding: 1.08rem 1.28rem;
+    font-size: clamp(0.98rem, 1.35vw, 1.08rem);
     line-height: 1.35;
   }
 
   .giftnote-embed__textarea {
-    min-height: 10rem;
+    min-height: 8.4rem;
     resize: vertical;
-    padding-bottom: 2.6rem;
+    padding-bottom: 2.15rem;
   }
 
   .giftnote-embed__character-count {
     position: absolute;
-    right: 1.5rem;
-    bottom: 1rem;
+    right: 1.15rem;
+    bottom: 0.85rem;
     color: #b2b8c2;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     line-height: 1;
     pointer-events: none;
   }
@@ -342,48 +342,48 @@
 
   @media screen and (max-width: 749px) {
     .giftnote-embed__toggle {
-      margin-bottom: 1rem;
-      padding: 0.28rem;
-      gap: 0.28rem;
+      margin-bottom: 0.85rem;
+      padding: 0.24rem;
+      gap: 0.24rem;
     }
 
     .giftnote-embed__toggle-option span {
-      min-height: 3.4rem;
-      padding: 0.75rem 0.85rem;
-      gap: 0.55rem;
-      font-size: 1rem;
+      min-height: 3rem;
+      padding: 0.65rem 0.75rem;
+      gap: 0.42rem;
+      font-size: 0.9rem;
     }
 
     .giftnote-embed__toggle-icon {
-      width: 1.15rem;
-      height: 1.15rem;
+      width: 0.92rem;
+      height: 0.92rem;
     }
 
     .giftnote-embed__panel {
-      gap: 1.1rem;
-      padding: 1.25rem;
+      gap: 0.92rem;
+      padding: 0.95rem;
       border-radius: 1.5rem;
     }
 
     .giftnote-embed__title {
       max-width: none;
-      font-size: 1.9rem;
+      font-size: 1.42rem;
     }
 
     .giftnote-embed__input.input,
     .giftnote-embed__input.textarea {
-      padding: 1.15rem 1.25rem;
-      border-radius: 1.35rem;
+      padding: 0.92rem 1rem;
+      border-radius: 1.2rem;
     }
 
     .giftnote-embed__textarea {
-      min-height: 8.5rem;
-      padding-bottom: 2.4rem;
+      min-height: 7rem;
+      padding-bottom: 1.9rem;
     }
 
     .giftnote-embed__character-count {
-      right: 1.1rem;
-      bottom: 0.9rem;
+      right: 0.9rem;
+      bottom: 0.75rem;
     }
   }
 {% endstylesheet %}

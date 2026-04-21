@@ -15,11 +15,10 @@
 
 {% liquid
   assign storage_mode = 'cart-attributes'
-  assign default_method = 'tracked'
+  assign default_method = 'instant'
 
   if product.gift_card?
     assign storage_mode = 'line-item-properties'
-    assign default_method = 'instant'
   endif
 %}
 

@@ -147,13 +147,14 @@
         "excerpt_word_count": 34,
         "color_scheme": "",
         "padding-block-start": 40,
-        "padding-block-end": 40
+        "padding-block-end": 80
       }
     },
     "supportive_article_grid_hjK82m": {
       "type": "supportive-article-grid",
       "name": "Article Grid",
       "settings": {
+        "blog": "",
         "post_limit": 6,
         "excerpt_word_count": 18,
         "color_scheme": "",

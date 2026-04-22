@@ -136,10 +136,23 @@
         "header_text": "Supportive Blog",
         "subheader_text": "A collection of gentle words, practical wisdom, and heartfelt support for those walking the path of pet loss."
       }
+    },
+    "supportive_featured_article_hx7A4f": {
+      "type": "supportive-featured-article",
+      "name": "Supportive Featured Article",
+      "settings": {
+        "pill_text": "Featured",
+        "read_more_label": "Read More",
+        "excerpt_word_count": 34,
+        "color_scheme": "",
+        "padding-block-start": 0,
+        "padding-block-end": 24
+      }
     }
   },
   "order": [
     "main",
-    "page_header_h8AmFa"
+    "page_header_h8AmFa",
+    "supportive_featured_article_hx7A4f"
   ]
 }

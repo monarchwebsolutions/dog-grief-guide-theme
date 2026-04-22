@@ -149,11 +149,23 @@
         "padding-block-start": 40,
         "padding-block-end": 40
       }
+    },
+    "supportive_article_grid_hjK82m": {
+      "type": "supportive-article-grid",
+      "name": "Article Grid",
+      "settings": {
+        "post_limit": 6,
+        "excerpt_word_count": 18,
+        "color_scheme": "",
+        "padding-block-start": 16,
+        "padding-block-end": 40
+      }
     }
   },
   "order": [
     "main",
     "page_header_h8AmFa",
-    "supportive_featured_article_hx7A4f"
+    "supportive_featured_article_hx7A4f",
+    "supportive_article_grid_hjK82m"
   ]
 }

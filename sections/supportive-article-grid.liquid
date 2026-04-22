@@ -1,0 +1,332 @@
+{% liquid
+  assign source_blog = section.settings.blog | default: blog
+  assign post_limit = section.settings.post_limit | default: 6
+  assign excerpt_word_count = section.settings.excerpt_word_count | default: 18
+
+  if source_blog != blank and source_blog.articles_count > 0
+    assign grid_articles = source_blog.articles
+  endif
+%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<section
+  class="supportive-article-grid section section--page-width color-{{ section.settings.color_scheme }} spacing-style"
+  style="{% render 'spacing-style', settings: section.settings %}"
+  {{ section.shopify_attributes }}
+>
+  <div class="supportive-article-grid__list">
+    {% if grid_articles != blank %}
+      {% for article in grid_articles limit: post_limit %}
+        {% liquid
+          assign article_tag = article.tags.first
+
+          if article.excerpt != blank
+            assign article_summary = article.excerpt | strip_html
+          else
+            assign article_summary = article.content | strip_html | truncatewords: excerpt_word_count
+          endif
+
+          assign article_word_count = article.content | strip_html | split: ' ' | size
+          assign article_read_time = article_word_count | plus: 199 | divided_by: 200
+          if article_read_time < 1
+            assign article_read_time = 1
+          endif
+        %}
+
+        <article class="supportive-article-grid__card">
+          <div class="supportive-article-grid__top-row">
+            {% if article_tag != blank %}
+              <span class="supportive-article-grid__pill">{{ article_tag }}</span>
+            {% else %}
+              <span class="supportive-article-grid__pill supportive-article-grid__pill--empty" aria-hidden="true"></span>
+            {% endif %}
+
+            <span class="supportive-article-grid__read-time">{{ article_read_time }} min read</span>
+          </div>
+
+          <div class="supportive-article-grid__body">
+            <h3 class="supportive-article-grid__title">
+              <a href="{{ article.url }}">{{ article.title }}</a>
+            </h3>
+
+            <div class="supportive-article-grid__summary rte">
+              <p>{{ article_summary }}</p>
+            </div>
+          </div>
+
+          <div class="supportive-article-grid__footer">
+            <div class="supportive-article-grid__date">
+              <span class="supportive-article-grid__date-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M8 2V5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M16 2V5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  <rect x="3" y="4.5" width="18" height="16.5" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+                  <path d="M3 9.5H21" stroke="currentColor" stroke-width="1.8"/>
+                </svg>
+              </span>
+              <span>{{ article.published_at | date: "%B %-d, %Y" }}</span>
+            </div>
+
+            <a
+              class="supportive-article-grid__arrow-link"
+              href="{{ article.url }}"
+              aria-label="Read {{ article.title }}"
+            >
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+      {% endfor %}
+    {% else %}
+      {% for i in (1..3) %}
+        <article class="supportive-article-grid__card">
+          <div class="supportive-article-grid__top-row">
+            <span class="supportive-article-grid__pill">Tag</span>
+            <span class="supportive-article-grid__read-time">5 min read</span>
+          </div>
+          <div class="supportive-article-grid__body">
+            <h3 class="supportive-article-grid__title">Supportive article title</h3>
+            <div class="supportive-article-grid__summary rte">
+              <p>Select a blog to populate this section with article cards.</p>
+            </div>
+          </div>
+          <div class="supportive-article-grid__footer">
+            <div class="supportive-article-grid__date">
+              <span class="supportive-article-grid__date-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M8 2V5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M16 2V5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  <rect x="3" y="4.5" width="18" height="16.5" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+                  <path d="M3 9.5H21" stroke="currentColor" stroke-width="1.8"/>
+                </svg>
+              </span>
+              <span>December 10, 2024</span>
+            </div>
+            <span class="supportive-article-grid__arrow-link" aria-hidden="true">→</span>
+          </div>
+        </article>
+      {% endfor %}
+    {% endif %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .supportive-article-grid__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+  }
+
+  .supportive-article-grid__card {
+    display: grid;
+    gap: 2rem;
+    min-height: 21rem;
+    padding: 2rem;
+    border-radius: 1.75rem;
+    background: #fff;
+    box-shadow: 0 18px 36px rgb(83 83 83 / 0.08);
+  }
+
+  .supportive-article-grid__top-row,
+  .supportive-article-grid__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .supportive-article-grid__pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.9rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    background: #dce3e7;
+    color: #7b8593;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .supportive-article-grid__pill--empty {
+    visibility: hidden;
+  }
+
+  .supportive-article-grid__read-time,
+  .supportive-article-grid__date {
+    color: #7a8695;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .supportive-article-grid__body {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+  }
+
+  .supportive-article-grid__title {
+    margin: 0;
+    color: #36404a;
+    font-family: 'Playfair Display', var(--font-heading--family);
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+  }
+
+  .supportive-article-grid__title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .supportive-article-grid__summary {
+    color: #667380;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.55;
+  }
+
+  .supportive-article-grid__summary p {
+    margin: 0;
+  }
+
+  .supportive-article-grid__date {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .supportive-article-grid__date-icon,
+  .supportive-article-grid__arrow-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #7a8695;
+  }
+
+  .supportive-article-grid__arrow-link {
+    color: #9ca8c7;
+    font-size: 1.75rem;
+    line-height: 1;
+    text-decoration: none;
+    transition: transform var(--animation-speed) var(--animation-easing), opacity var(--animation-speed) var(--animation-easing);
+  }
+
+  .supportive-article-grid__card:hover .supportive-article-grid__arrow-link {
+    transform: translateX(2px);
+    opacity: 0.82;
+  }
+
+  @media screen and (max-width: 1023px) {
+    .supportive-article-grid__list {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .supportive-article-grid__card {
+      min-height: auto;
+      padding: 1.5rem;
+      gap: 1.5rem;
+      border-radius: 1.4rem;
+    }
+
+    .supportive-article-grid__title {
+      font-size: 30px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .supportive-article-grid__card {
+      padding: 1.25rem;
+      gap: 1.2rem;
+    }
+
+    .supportive-article-grid__top-row,
+    .supportive-article-grid__footer {
+      gap: 0.8rem;
+    }
+
+    .supportive-article-grid__title {
+      font-size: 26px;
+    }
+
+    .supportive-article-grid__summary {
+      font-size: 15px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Article Grid",
+  "tag": "section",
+  "class": "supportive-article-grid-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog",
+      "info": "Leave blank to use the current blog."
+    },
+    {
+      "type": "range",
+      "id": "post_limit",
+      "label": "Posts to show",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "excerpt_word_count",
+      "label": "Fallback excerpt length",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "default": 18,
+      "info": "Used only when an article has no excerpt."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article Grid"
+    }
+  ]
+}
+{% endschema %}

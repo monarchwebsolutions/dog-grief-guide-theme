@@ -141,12 +141,13 @@
       "type": "supportive-featured-article",
       "name": "Featured Article",
       "settings": {
+        "article": "supportive-blog/how-long-does-dog-grief-last",
         "pill_text": "Featured",
         "read_more_label": "Read More",
         "excerpt_word_count": 34,
         "color_scheme": "",
-        "padding-block-start": 0,
-        "padding-block-end": 24
+        "padding-block-start": 40,
+        "padding-block-end": 40
       }
     }
   },

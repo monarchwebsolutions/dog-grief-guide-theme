@@ -139,7 +139,7 @@
     },
     "supportive_featured_article_hx7A4f": {
       "type": "supportive-featured-article",
-      "name": "Supportive Featured Article",
+      "name": "Featured Article",
       "settings": {
         "pill_text": "Featured",
         "read_more_label": "Read More",

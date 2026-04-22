@@ -158,8 +158,8 @@
         "post_limit": 6,
         "excerpt_word_count": 18,
         "color_scheme": "",
-        "padding-block-start": 16,
-        "padding-block-end": 40
+        "padding-block-start": 40,
+        "padding-block-end": 80
       }
     },
     "custom_section_supportive_blog_join": {

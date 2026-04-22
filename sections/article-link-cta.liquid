@@ -8,7 +8,11 @@
         <a
           class="article-link-cta__link"
           href="{{ section.settings.url }}"
-          style="--article-link-cta-font-size: {{ section.settings.font_size }}px;"
+          style="
+            --article-link-cta-font-size-desktop: {{ section.settings.font_size_desktop }}px;
+            --article-link-cta-font-size-mobile: {{ section.settings.font_size_mobile }}px;
+            --article-link-cta-color: {{ section.settings.font_color }};
+          "
         >
           <span>{{ section.settings.text }}</span>
           <span aria-hidden="true" class="article-link-cta__arrow">&rarr;</span>
@@ -30,9 +34,9 @@
     justify-content: center;
     gap: 0.5rem;
     text-align: center;
-    font-size: var(--article-link-cta-font-size, 16px);
+    font-size: var(--article-link-cta-font-size-desktop, 16px);
     font-weight: 500;
-    color: var(--dgg-black);
+    color: var(--article-link-cta-color, var(--dgg-black));
     text-decoration: none;
   }
 
@@ -42,6 +46,12 @@
 
   .article-link-cta__arrow {
     line-height: 1;
+  }
+
+  @media screen and (max-width: 749px) {
+    .article-link-cta__link {
+      font-size: var(--article-link-cta-font-size-mobile, var(--article-link-cta-font-size-desktop, 16px));
+    }
   }
 {% endstylesheet %}
 
@@ -62,13 +72,29 @@
     },
     {
       "type": "range",
-      "id": "font_size",
-      "label": "Font size",
+      "id": "font_size_desktop",
+      "label": "Desktop font size",
       "min": 12,
       "max": 32,
       "step": 1,
       "unit": "px",
       "default": 16
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Mobile font size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "font_color",
+      "label": "Font color",
+      "default": "#2d3436"
     },
     {
       "type": "header",

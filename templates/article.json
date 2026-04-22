@@ -94,10 +94,10 @@
       "type": "article-link-cta",
       "settings": {
         "text": "Learn more about The Dog Grief Guide",
-        "url": "",
-        "font_size": 16,
+        "url": "shopify://products/the-dog-grief-guide",
+        "font_size": 24,
         "padding-block-start": 0,
-        "padding-block-end": 48
+        "padding-block-end": 80
       }
     }
   },

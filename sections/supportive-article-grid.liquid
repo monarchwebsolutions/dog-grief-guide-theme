@@ -19,6 +19,7 @@
       {% for article in grid_articles limit: post_limit %}
         {% liquid
           assign article_tag = article.tags.first
+          assign pill_variant = forloop.index0 | modulo: 3
 
           if article.excerpt != blank
             assign article_summary = article.excerpt | strip_html
@@ -36,7 +37,7 @@
         <article class="supportive-article-grid__card">
           <div class="supportive-article-grid__top-row">
             {% if article_tag != blank %}
-              <span class="supportive-article-grid__pill">{{ article_tag }}</span>
+              <span class="supportive-article-grid__pill supportive-article-grid__pill--{{ pill_variant }}">{{ article_tag }}</span>
             {% else %}
               <span class="supportive-article-grid__pill supportive-article-grid__pill--empty" aria-hidden="true"></span>
             {% endif %}
@@ -81,7 +82,7 @@
       {% for i in (1..3) %}
         <article class="supportive-article-grid__card">
           <div class="supportive-article-grid__top-row">
-            <span class="supportive-article-grid__pill">Tag</span>
+            <span class="supportive-article-grid__pill supportive-article-grid__pill--{{ forloop.index0 | modulo: 3 }}">Tag</span>
             <span class="supportive-article-grid__read-time">5 min read</span>
           </div>
           <div class="supportive-article-grid__body">
@@ -141,11 +142,24 @@
     min-height: 1.9rem;
     padding: 0.35rem 0.9rem;
     border-radius: 999px;
-    background: #dce3e7;
-    color: #7b8593;
     font-size: 14px;
     font-weight: 600;
     line-height: 1;
+  }
+
+  .supportive-article-grid__pill--0 {
+    background: #ebedf2;
+    color: #8c98b6;
+  }
+
+  .supportive-article-grid__pill--1 {
+    background: #f7efd5;
+    color: #d6ae23;
+  }
+
+  .supportive-article-grid__pill--2 {
+    background: #d7e0d8;
+    color: #627375;
   }
 
   .supportive-article-grid__pill--empty {

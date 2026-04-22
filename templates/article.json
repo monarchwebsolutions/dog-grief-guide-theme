@@ -89,9 +89,20 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "article_link_cta": {
+      "type": "article-link-cta",
+      "settings": {
+        "text": "Learn more about The Dog Grief Guide",
+        "url": "",
+        "font_size": 16,
+        "padding-block-start": 0,
+        "padding-block-end": 48
+      }
     }
   },
   "order": [
-    "section"
+    "section",
+    "article_link_cta"
   ]
 }

@@ -383,7 +383,7 @@
         }
       },
       "custom_css": [
-        ".add-to-cart-button {display: none;}"
+        ".add-to-cart-button {/* display: none; */}"
       ],
       "settings": {
         "content_width": "content-center-aligned",

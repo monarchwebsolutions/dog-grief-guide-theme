@@ -201,11 +201,6 @@
         "column_3_img_prl": 0,
         "column_3_img_pb": 0
       }
-    },
-    "live_web_C9eBj8": {
-      "type": "live-web",
-      "name": "Live Web",
-      "settings": {}
     }
   },
   "order": [
@@ -213,7 +208,6 @@
     "page_header_h8AmFa",
     "supportive_featured_article_hx7A4f",
     "supportive_article_grid_hjK82m",
-    "custom_section_supportive_blog_join",
-    "live_web_C9eBj8"
+    "custom_section_supportive_blog_join"
   ]
 }

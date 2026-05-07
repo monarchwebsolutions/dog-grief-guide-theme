@@ -1,5 +1,5 @@
 {% comment %}
-  Renders a simplified embedded Giftnote form inside the product form.
+  Renders an embedded Giftnote form inside the product form.
 
   Accepts:
   - product: {Object} product object
@@ -15,7 +15,7 @@
 
 {% liquid
   assign storage_mode = 'cart-attributes'
-  assign default_method = 'instant'
+  assign default_method = 'tracked'
 
   if product.gift_card?
     assign storage_mode = 'line-item-properties'
@@ -94,6 +94,24 @@
     <div class="field">
       <label
         class="visually-hidden"
+        for="Giftnote-from-{{ block.id }}"
+      >
+        Sender's name
+      </label>
+      <input
+        id="Giftnote-from-{{ block.id }}"
+        class="input giftnote-embed__input"
+        type="text"
+        placeholder="Your name"
+        maxlength="100"
+        autocomplete="name"
+        data-ref="from"
+      >
+    </div>
+
+    <div class="field">
+      <label
+        class="visually-hidden"
         for="Giftnote-email-{{ block.id }}"
       >
         Recipient's email
@@ -108,6 +126,24 @@
         autocorrect="off"
         autocapitalize="off"
         data-ref="email"
+      >
+    </div>
+
+    <div class="field">
+      <label
+        class="visually-hidden"
+        for="Giftnote-phone-{{ block.id }}"
+      >
+        Recipient's phone
+      </label>
+      <input
+        id="Giftnote-phone-{{ block.id }}"
+        class="input giftnote-embed__input"
+        type="tel"
+        placeholder="Recipient's phone (optional)"
+        inputmode="tel"
+        autocomplete="tel"
+        data-ref="phone"
       >
     </div>
 
@@ -132,6 +168,73 @@
       >
         0/210
       </span>
+    </div>
+
+    <div class="giftnote-embed__timing">
+      <p class="giftnote-embed__timing-label">When should we send your message?</p>
+
+      <div
+        class="giftnote-embed__timing-options"
+        role="radiogroup"
+        aria-label="When should we send your message?"
+      >
+        <label class="giftnote-embed__timing-option">
+          <input
+            type="radio"
+            name="giftnote-method-{{ block.id }}"
+            value="tracked"
+            checked
+            data-ref="method"
+          >
+          <span>On Delivery</span>
+        </label>
+
+        <label class="giftnote-embed__timing-option">
+          <input
+            type="radio"
+            name="giftnote-method-{{ block.id }}"
+            value="instant"
+            data-ref="method"
+          >
+          <span>Send Now</span>
+        </label>
+
+        <label class="giftnote-embed__timing-option">
+          <input
+            type="radio"
+            name="giftnote-method-{{ block.id }}"
+            value="scheduled"
+            data-ref="method"
+          >
+          <span>Send Later</span>
+        </label>
+      </div>
+
+      <p
+        class="giftnote-embed__timing-copy"
+        data-ref="methodHelp"
+      >
+        Your message will be sent when your order is delivered to your shipping address.
+      </p>
+
+      <div
+        class="field giftnote-embed__schedule-field"
+        data-ref="scheduleField"
+        hidden
+      >
+        <label
+          class="visually-hidden"
+          for="Giftnote-time-{{ block.id }}"
+        >
+          Scheduled send time
+        </label>
+        <input
+          id="Giftnote-time-{{ block.id }}"
+          class="input giftnote-embed__input"
+          type="datetime-local"
+          data-ref="time"
+        >
+      </div>
     </div>
 
     <p class="giftnote-embed__note">
@@ -275,6 +378,78 @@
     width: 100%;
   }
 
+  .giftnote-embed__timing {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .giftnote-embed__timing-label {
+    margin: 0;
+    color: #4a5560;
+    font-size: 0.98rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .giftnote-embed__timing-options {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.4rem;
+  }
+
+  .giftnote-embed__timing-option {
+    position: relative;
+    display: flex;
+  }
+
+  .giftnote-embed__timing-option input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .giftnote-embed__timing-option span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid #dfe5ee;
+    border-radius: 1rem;
+    background: #fff;
+    color: #6a7380;
+    font-size: 0.92rem;
+    font-weight: 500;
+    text-align: center;
+    transition: background-color var(--animation-speed) var(--animation-easing),
+      color var(--animation-speed) var(--animation-easing),
+      border-color var(--animation-speed) var(--animation-easing);
+  }
+
+  .giftnote-embed__timing-option:has(input:checked) span {
+    border-color: #8ea0c4;
+    background: #8ea0c4;
+    color: #fff;
+  }
+
+  .giftnote-embed__timing-option:has(input:focus-visible) span {
+    outline: 2px solid #b6becb;
+    outline-offset: 2px;
+  }
+
+  .giftnote-embed__timing-copy {
+    margin: 0;
+    padding: 0.9rem 1rem;
+    border: 1px solid #e3e6ec;
+    border-radius: 1rem;
+    background: rgb(255 255 255 / 0.72);
+    color: #67727c;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
   .giftnote-embed__input {
     display: block;
     width: 100%;
@@ -391,6 +566,10 @@
     .giftnote-embed__character-count {
       right: 0.82rem;
       bottom: 0.68rem;
+    }
+
+    .giftnote-embed__timing-options {
+      grid-template-columns: 1fr;
     }
   }
 {% endstylesheet %}

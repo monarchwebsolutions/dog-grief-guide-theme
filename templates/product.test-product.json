@@ -300,7 +300,6 @@
                 "stacking": true,
                 "show_pickup_availability": false,
                 "gift_card_form": true,
-                "giftnote_embed_form": true,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,

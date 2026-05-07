@@ -300,6 +300,10 @@ class ProductFormComponent extends Component {
 
     if (!form) throw new Error('Product form element missing');
 
+    const giftnoteForm = /** @type {{ beforeSubmit?: () => Promise<boolean> } | null} */ (
+      this.querySelector('giftnote-embedded-form')
+    );
+
     if (this.refs.quantitySelector?.canAddToCart) {
       const validation = this.refs.quantitySelector.canAddToCart();
 
@@ -338,6 +342,36 @@ class ProductFormComponent extends Component {
             container.enable();
           }
         }, ERROR_BUTTON_REENABLE_DELAY);
+
+        return;
+      }
+    }
+
+    if (giftnoteForm?.beforeSubmit) {
+      try {
+        const prepared = await giftnoteForm.beforeSubmit();
+        if (!prepared) return;
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Something went wrong. Please try again.';
+
+        if (addToCartTextError) {
+          addToCartTextError.classList.remove('hidden');
+
+          const textNode = addToCartTextError.childNodes[2];
+          if (textNode) {
+            textNode.textContent = message;
+          } else {
+            addToCartTextError.appendChild(document.createTextNode(message));
+          }
+
+          this.#setLiveRegionText(message);
+
+          this.#timeout = setTimeout(() => {
+            if (!addToCartTextError) return;
+            addToCartTextError.classList.add('hidden');
+            this.#clearLiveRegionText();
+          }, ERROR_MESSAGE_DISPLAY_DURATION);
+        }
 
         return;
       }

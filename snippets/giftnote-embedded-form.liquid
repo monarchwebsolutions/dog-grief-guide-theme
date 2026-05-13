@@ -217,13 +217,19 @@
 
   .giftnote-embed__timing {
     display: grid;
-    gap: 0.8rem;
+    gap: 0;
   }
 
   .giftnote-embed__timing-options {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0;
+  }
+
+  .giftnote-embed__timing-options,
+  .giftnote-embed__timing-copy,
+  .giftnote-embed [data-ref='scheduleField'] {
+    display: none !important;
   }
 
   .giftnote-embed__timing-option {

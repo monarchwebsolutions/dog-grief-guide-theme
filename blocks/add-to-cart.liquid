@@ -27,7 +27,8 @@
     product: closest.product,
     add_to_cart_text: 'Buy it Now',
     data_testid: 'standalone-buy-it-now',
-    buy_now: true
+    buy_now: true,
+    icon_svg: block.settings.buy_now_icon_svg
   %}
 
   {% render 'add-to-cart-button',
@@ -110,6 +111,12 @@
         }
       ],
       "default": "button-secondary"
+    },
+    {
+      "type": "textarea",
+      "id": "buy_now_icon_svg",
+      "label": "Buy it now icon SVG",
+      "info": "Paste SVG markup to replace the Buy it Now button icon."
     }
   ]
 }

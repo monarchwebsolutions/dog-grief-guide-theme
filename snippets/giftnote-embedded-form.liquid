@@ -27,115 +27,55 @@
   data-default-from="{{ shop.name | escape }}"
 >
   <div class="giftnote-embed__header">
-    <h3 class="giftnote-embed__title">Gifting has never been easier</h3>
     <p class="giftnote-embed__subtitle">
-      Perfect if you're short on time or are unable to deliver your gift yourself. Enter your message and select when to send it.
+      Send comfort to someone navigating the loss of their beloved companion.
     </p>
   </div>
 
-  <div class="giftnote-embed__grid giftnote-embed__grid--two">
-    <div class="field">
-      <label class="visually-hidden" for="Giftnote-to-{{ block.id }}">To</label>
-      <input
-        id="Giftnote-to-{{ block.id }}"
-        class="input giftnote-embed__input"
-        type="text"
-        placeholder="Who is it for?"
-        maxlength="100"
-        autocomplete="name"
-        data-ref="to"
-      >
-    </div>
+  <div class="field">
+    <label class="visually-hidden" for="Giftnote-to-{{ block.id }}">Recipient's name</label>
+    <input
+      id="Giftnote-to-{{ block.id }}"
+      class="input giftnote-embed__input"
+      type="text"
+      placeholder="Recipient's name"
+      maxlength="100"
+      autocomplete="name"
+      data-ref="to"
+    >
+  </div>
 
-    <div class="field">
-      <label class="visually-hidden" for="Giftnote-from-{{ block.id }}">From</label>
-      <input
-        id="Giftnote-from-{{ block.id }}"
-        class="input giftnote-embed__input"
-        type="text"
-        placeholder="Who is this from?"
-        maxlength="100"
-        autocomplete="name"
-        data-ref="from"
-      >
-    </div>
+  <div class="field">
+    <label class="visually-hidden" for="Giftnote-email-{{ block.id }}">Recipient's email</label>
+    <input
+      id="Giftnote-email-{{ block.id }}"
+      class="input giftnote-embed__input"
+      type="email"
+      placeholder="Recipient's email"
+      inputmode="email"
+      autocomplete="email"
+      autocorrect="off"
+      autocapitalize="off"
+      data-ref="email"
+    >
   </div>
 
   <div class="field giftnote-embed__message-field">
-    <label class="visually-hidden" for="Giftnote-message-{{ block.id }}">Message</label>
+    <label class="visually-hidden" for="Giftnote-message-{{ block.id }}">Personal message</label>
     <textarea
       id="Giftnote-message-{{ block.id }}"
       class="input textarea giftnote-embed__input giftnote-embed__textarea"
       rows="5"
       maxlength="210"
-      placeholder="Write your message..."
+      placeholder="Personal message (optional)"
       data-ref="message"
     ></textarea>
-    <span class="giftnote-embed__character-count" data-ref="messageCount">0/210</span>
   </div>
 
-  <div class="giftnote-embed__grid giftnote-embed__grid--two">
-    <div class="field">
-      <label class="visually-hidden" for="Giftnote-email-{{ block.id }}">Recipient's email</label>
-      <input
-        id="Giftnote-email-{{ block.id }}"
-        class="input giftnote-embed__input"
-        type="email"
-        placeholder="recipient@giftnote.com"
-        inputmode="email"
-        autocomplete="email"
-        autocorrect="off"
-        autocapitalize="off"
-        data-ref="email"
-      >
-    </div>
-
-    <div class="field">
-      <label class="visually-hidden" for="Giftnote-phone-{{ block.id }}">Recipient's phone number</label>
-      <input
-        id="Giftnote-phone-{{ block.id }}"
-        class="input giftnote-embed__input"
-        type="tel"
-        placeholder="+1 (201) 555-0123"
-        inputmode="tel"
-        autocomplete="tel"
-        data-ref="phone"
-      >
-    </div>
-  </div>
-
-  <div class="giftnote-embed__timing">
-    <p class="giftnote-embed__timing-label">When should we send your message?</p>
-
-    <div class="giftnote-embed__timing-options" role="radiogroup" aria-label="When should we send your message?">
-      <label class="giftnote-embed__timing-option">
-        <input type="radio" name="giftnote-method-{{ block.id }}" value="tracked" data-ref="method">
-        <span>On Delivery</span>
-      </label>
-      <label class="giftnote-embed__timing-option">
-        <input type="radio" name="giftnote-method-{{ block.id }}" value="instant" checked data-ref="method">
-        <span>Send Now</span>
-      </label>
-      <label class="giftnote-embed__timing-option">
-        <input type="radio" name="giftnote-method-{{ block.id }}" value="scheduled" data-ref="method">
-        <span>Send Later</span>
-      </label>
-    </div>
-
-    <p class="giftnote-embed__timing-copy" data-ref="methodHelp">
-      Your message will be sent right away after checkout.
-    </p>
-
-    <div class="field" data-ref="scheduleField" hidden>
-      <label class="visually-hidden" for="Giftnote-time-{{ block.id }}">Scheduled send time</label>
-      <input
-        id="Giftnote-time-{{ block.id }}"
-        class="input giftnote-embed__input"
-        type="datetime-local"
-        data-ref="time"
-      >
-    </div>
-  </div>
+  <p class="giftnote-embed__note">
+    <span class="giftnote-embed__note-icon" aria-hidden="true">✧</span>
+    <span>We'll send a beautiful email letting them know about your thoughtful gift.</span>
+  </p>
 
   <button class="giftnote-embed__save" type="button" data-ref="saveButton">Save message</button>
 
@@ -156,148 +96,79 @@
 {% stylesheet %}
   .giftnote-embed {
     display: grid;
-    gap: 1rem;
+    gap: 0.95rem;
     width: 100%;
+    padding: 1.55rem 1.45rem 1.3rem;
     margin-block-end: calc(var(--gap) * 2);
+    border-radius: 1.2rem;
+    background:
+      radial-gradient(circle at top center, rgb(255 255 255 / 0.72), transparent 62%),
+      linear-gradient(180deg, #f8f4ed 0%, #f5f0e8 100%);
+    box-shadow: inset 0 0 0 1px rgb(230 222 210 / 0.75);
   }
 
   .giftnote-embed__header {
-    display: grid;
-    gap: 0.5rem;
-    text-align: center;
-  }
-
-  .giftnote-embed__title {
-    margin: 0;
-    font-size: 2.25rem;
-    font-weight: 600;
-    color: #5f6b75;
+    display: block;
   }
 
   .giftnote-embed__subtitle {
     margin: 0;
-    font-size: 1rem;
-    line-height: 1.45;
-    color: #4f5b66;
-  }
-
-  .giftnote-embed__grid {
-    display: grid;
-    gap: 0.9rem;
-  }
-
-  .giftnote-embed__grid--two {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 28rem;
+    font-size: 1.04rem;
+    line-height: 1.36;
+    font-weight: 500;
+    color: #687480;
   }
 
   .giftnote-embed__input {
     display: block;
     width: 100%;
-    border: 1px solid #cfd6df;
-    border-radius: 0.65rem;
+    border: 1px solid #d9dfe8;
+    border-radius: 1rem;
     background: #fff;
     box-sizing: border-box;
+    box-shadow: 0 2px 6px rgb(220 213 202 / 0.12);
   }
 
   .giftnote-embed__input.input,
   .giftnote-embed__input.textarea {
-    padding: 0.95rem 1rem;
-    font-size: 0.95rem;
+    padding: 0.92rem 1rem;
+    font-size: 1rem;
     line-height: 1.35;
+    color: #63707c;
+  }
+
+  .giftnote-embed__input::placeholder {
+    color: #9aa4b4;
+    opacity: 1;
   }
 
   .giftnote-embed__textarea {
-    min-height: 8.75rem;
+    min-height: 7.75rem;
     resize: vertical;
-    padding-bottom: 1.85rem;
+    padding-bottom: 1rem;
   }
 
   .giftnote-embed__message-field {
     position: relative;
   }
 
-  .giftnote-embed__character-count {
-    position: absolute;
-    right: 0.95rem;
-    bottom: 0.75rem;
-    color: #9aa4ae;
-    font-size: 0.8rem;
+  .giftnote-embed__note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin: 0;
+    color: #67727c;
+    font-size: 0.96rem;
+    line-height: 1.35;
+    font-weight: 500;
+  }
+
+  .giftnote-embed__note-icon {
+    color: #f0ca54;
+    font-size: 1.12rem;
     line-height: 1;
-    pointer-events: none;
-  }
-
-  .giftnote-embed__timing {
-    display: grid;
-    gap: 0.8rem;
-  }
-
-  .giftnote-embed__timing-label {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #222;
-  }
-
-  .giftnote-embed__timing-options,
-  .giftnote-embed__timing-copy,
-  .giftnote-embed [data-ref='scheduleField'] {
-    display: none !important;
-  }
-
-  .giftnote-embed__timing-options {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .giftnote-embed__timing-option {
-    position: relative;
-    display: flex;
-  }
-
-  .giftnote-embed__timing-option input {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    cursor: pointer;
-  }
-
-  .giftnote-embed__timing-option span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-height: 2.5rem;
-    padding: 0.75rem 0.5rem;
-    border: 1px solid #cfd6df;
-    background: #fff;
-    color: #8b939c;
-    font-size: 0.95rem;
-    text-align: center;
-  }
-
-  .giftnote-embed__timing-option:first-child span {
-    border-radius: 0.5rem 0 0 0.5rem;
-  }
-
-  .giftnote-embed__timing-option:last-child span {
-    border-radius: 0 0.5rem 0.5rem 0;
-  }
-
-  .giftnote-embed__timing-option:has(input:checked) span {
-    background: #4f81ee;
-    border-color: #4f81ee;
-    color: #fff;
-  }
-
-  .giftnote-embed__timing-copy {
-    margin: 0;
-    padding: 0.9rem 1rem;
-    border: 1px solid #cfd6df;
-    border-radius: 0.5rem;
-    color: #6f7881;
-    font-size: 0.95rem;
-    line-height: 1.4;
-    text-align: center;
+    transform: translateY(0.05rem);
   }
 
   .giftnote-embed__save {
@@ -333,18 +204,29 @@
   }
 
   @media screen and (max-width: 749px) {
-    .giftnote-embed__title {
-      font-size: 1.8rem;
+    .giftnote-embed {
+      gap: 0.8rem;
+      padding: 1.15rem 1rem 1rem;
+      border-radius: 1rem;
     }
 
-    .giftnote-embed__grid--two,
-    .giftnote-embed__timing-options {
-      grid-template-columns: 1fr;
+    .giftnote-embed__subtitle {
+      font-size: 0.94rem;
+      line-height: 1.32;
     }
 
-    .giftnote-embed__timing-option:first-child span,
-    .giftnote-embed__timing-option:last-child span {
-      border-radius: 0.5rem;
+    .giftnote-embed__input.input,
+    .giftnote-embed__input.textarea {
+      padding: 0.85rem 0.9rem;
+      font-size: 0.96rem;
+    }
+
+    .giftnote-embed__textarea {
+      min-height: 6.75rem;
+    }
+
+    .giftnote-embed__note {
+      font-size: 0.88rem;
     }
   }
 {% endstylesheet %}

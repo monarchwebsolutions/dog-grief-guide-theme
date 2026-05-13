@@ -24,25 +24,29 @@
     --buy-now-icon-size: {{ block.settings.buy_now_icon_size }}px;
   "
 >
-  {% render 'add-to-cart-button',
-    id: buy_now_id,
-    class: buy_now_class,
-    can_add_to_cart: can_add_to_cart,
-    product: closest.product,
-    add_to_cart_text: 'Buy it Now',
-    data_testid: 'standalone-buy-it-now',
-    buy_now: true,
-    icon_svg: block.settings.buy_now_icon_svg
-  %}
+  {% unless block.settings.hide_buy_now_button %}
+    {% render 'add-to-cart-button',
+      id: buy_now_id,
+      class: buy_now_class,
+      can_add_to_cart: can_add_to_cart,
+      product: closest.product,
+      add_to_cart_text: 'Buy it Now',
+      data_testid: 'standalone-buy-it-now',
+      buy_now: true,
+      icon_svg: block.settings.buy_now_icon_svg
+    %}
+  {% endunless %}
 
-  {% render 'add-to-cart-button',
-    id: id,
-    class: class,
-    can_add_to_cart: can_add_to_cart,
-    product: closest.product,
-    add_to_cart_text: add_to_cart_text,
-    data_testid: 'standalone-add-to-cart'
-  %}
+  {% unless block.settings.hide_add_to_cart_button %}
+    {% render 'add-to-cart-button',
+      id: id,
+      class: class,
+      can_add_to_cart: can_add_to_cart,
+      product: closest.product,
+      add_to_cart_text: add_to_cart_text,
+      data_testid: 'standalone-add-to-cart'
+    %}
+  {% endunless %}
 </span>
 
 {% stylesheet %}
@@ -115,6 +119,18 @@
         }
       ],
       "default": "button-secondary"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_buy_now_button",
+      "label": "Hide Buy it Now button",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_add_to_cart_button",
+      "label": "Hide Add to Cart button",
+      "default": false
     },
     {
       "type": "textarea",

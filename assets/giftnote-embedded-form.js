@@ -57,7 +57,7 @@ class GiftnoteEmbeddedForm extends HTMLElement {
   }
 
   get selectedMethod() {
-    return this.methodInputs.find((field) => field.checked)?.value || 'tracked';
+    return this.methodInputs.find((field) => field.checked)?.value || 'instant';
   }
 
   handleMethodChange = () => {

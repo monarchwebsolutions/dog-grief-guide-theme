@@ -16,6 +16,8 @@ class GiftnoteEmbeddedForm extends HTMLElement {
     if (this.dataset.initialized === 'true') return;
     this.dataset.initialized = 'true';
 
+    this.modeInputs = Array.from(this.querySelectorAll('[data-ref="mode"]'));
+    this.panel = this.querySelector('[data-ref="panel"]');
     this.toInput = this.querySelector('[data-ref="to"]');
     this.fromInput = this.querySelector('[data-ref="from"]');
     this.messageInput = this.querySelector('[data-ref="message"]');
@@ -37,6 +39,7 @@ class GiftnoteEmbeddedForm extends HTMLElement {
       this.fromInput.value = this.defaultFrom;
     }
 
+    this.modeInputs.forEach((field) => field?.addEventListener('change', this.handleModeChange));
     this.methodInputs.forEach((field) => field?.addEventListener('change', this.handleMethodChange));
     [this.toInput, this.fromInput, this.messageInput, this.emailInput, this.phoneInput, this.timeInput].forEach(
       (field) => field?.addEventListener('input', this.handleInput)
@@ -44,11 +47,13 @@ class GiftnoteEmbeddedForm extends HTMLElement {
     this.saveButton?.addEventListener('click', this.handleSave);
 
     this.updateCharacterCount();
+    this.updateModeState();
     this.updateMethodState();
     this.syncHiddenFields();
   }
 
   disconnectedCallback() {
+    this.modeInputs.forEach((field) => field?.removeEventListener('change', this.handleModeChange));
     this.methodInputs.forEach((field) => field?.removeEventListener('change', this.handleMethodChange));
     [this.toInput, this.fromInput, this.messageInput, this.emailInput, this.phoneInput, this.timeInput].forEach(
       (field) => field?.removeEventListener('input', this.handleInput)
@@ -59,6 +64,17 @@ class GiftnoteEmbeddedForm extends HTMLElement {
   get selectedMethod() {
     return this.methodInputs.find((field) => field.checked)?.value || 'instant';
   }
+
+  get giftingEnabled() {
+    return this.modeInputs.find((field) => field.checked)?.value === 'gift';
+  }
+
+  handleModeChange = () => {
+    this.clearStatus();
+    this.clearValidation();
+    this.updateModeState();
+    this.syncHiddenFields();
+  };
 
   handleMethodChange = () => {
     this.clearStatus();
@@ -77,6 +93,8 @@ class GiftnoteEmbeddedForm extends HTMLElement {
   handleSave = async () => {
     this.clearStatus();
     this.syncHiddenFields();
+
+    if (!this.giftingEnabled) return;
 
     if (!this.validate()) return;
 
@@ -101,6 +119,12 @@ class GiftnoteEmbeddedForm extends HTMLElement {
   updateCharacterCount() {
     if (!this.messageInput || !this.messageCount) return;
     this.messageCount.textContent = `${this.messageInput.value.length}/${this.messageInput.maxLength}`;
+  }
+
+  updateModeState() {
+    if (this.panel) {
+      this.panel.hidden = !this.giftingEnabled;
+    }
   }
 
   updateMethodState() {
@@ -171,6 +195,10 @@ class GiftnoteEmbeddedForm extends HTMLElement {
   }
 
   getPayload() {
+    if (!this.giftingEnabled) {
+      return GIFTFORM_FIELDS.reduce((attributes, key) => ({ ...attributes, [key]: '' }), {});
+    }
+
     const email = this.emailInput?.value.trim() || '';
     const phone = this.normalizePhone(this.phoneInput?.value || '');
     let medium = '';
@@ -203,6 +231,8 @@ class GiftnoteEmbeddedForm extends HTMLElement {
   }
 
   validate() {
+    if (!this.giftingEnabled) return true;
+
     this.clearValidation();
 
     if (this.toInput && !this.toInput.value.trim()) {
@@ -252,6 +282,22 @@ class GiftnoteEmbeddedForm extends HTMLElement {
   async beforeSubmit() {
     this.clearStatus();
     this.syncHiddenFields();
+
+    if (!this.giftingEnabled) {
+      if (this.storageMode !== 'cart-attributes') return true;
+
+      const payload = this.getPayload();
+      const config = fetchConfig('json', {
+        body: JSON.stringify({ attributes: payload }),
+      });
+
+      const response = await fetch(Theme.routes.cart_update_url, config);
+      if (response.ok) return true;
+
+      const message = 'We could not update the gift details. Please try again.';
+      this.setStatus(message, 'error');
+      throw new Error(message);
+    }
 
     if (!this.validate()) return false;
 

@@ -8,6 +8,7 @@
   @param {string} [class] - Additional CSS classes to apply to the button.
   @param {string} [id] - The ID attribute for the button.
   @param {string} [data_testid] - The data-testid attribute for testing.
+  @param {boolean} [buy_now] - Whether this button should trigger buy-now checkout behavior.
 {%- enddoc -%}
 
 {%- liquid
@@ -32,6 +33,9 @@
     ref="addToCartButton"
     on:click="/handleClick"
     class="button {{ class }}"
+    {% if buy_now %}
+      data-buy-now="true"
+    {% endif %}
     {% if data_testid %}
       data-testid="{{ data_testid }}"
     {% endif %}

@@ -11,12 +11,25 @@
 {% liquid
   assign class = 'add-to-cart-button ' | append: block.settings.style_class
   assign id = 'BuyButtons-ProductSubmitButton-' | append: block.id
+  assign buy_now_class = 'add-to-cart-button add-to-cart-button--buy-now button-secondary'
+  assign buy_now_id = 'BuyButtons-ProductBuyNowButton-' | append: block.id
 %}
 
 <span
+  class="add-to-cart-block"
   {{ block.shopify_attributes }}
   style="--add-to-cart-font-case: {{ settings.button_text_case }};"
 >
+  {% render 'add-to-cart-button',
+    id: buy_now_id,
+    class: buy_now_class,
+    can_add_to_cart: can_add_to_cart,
+    product: closest.product,
+    add_to_cart_text: 'Buy it Now',
+    data_testid: 'standalone-buy-it-now',
+    buy_now: true
+  %}
+
   {% render 'add-to-cart-button',
     id: id,
     class: class,
@@ -26,6 +39,58 @@
     data_testid: 'standalone-add-to-cart'
   %}
 </span>
+
+{% stylesheet %}
+  .add-to-cart-block {
+    display: grid;
+    gap: 0.85rem;
+    width: 100%;
+  }
+
+  .add-to-cart-block .add-to-cart-button--buy-now {
+    --button-color: #ffffff;
+    --button-background-color: #9ca9c8;
+    --button-border-color: transparent;
+    --button-border-width: 0;
+    width: 100%;
+    min-height: 3.5rem;
+    padding-block: 1rem;
+    padding-inline: 1.4rem;
+    border-radius: 999px;
+    box-shadow: 0 10px 24px rgb(156 169 200 / 0.28);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .add-to-cart-block .add-to-cart-button--buy-now:hover:not([disabled]) {
+    --button-color: #ffffff;
+    --button-background-color: #8f9dbc;
+    --button-border-color: transparent;
+  }
+
+  .add-to-cart-block .add-to-cart-button--buy-now .add-to-cart-text {
+    gap: 0.65rem;
+  }
+
+  .add-to-cart-block .add-to-cart-button--buy-now .add-to-cart-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .add-to-cart-block .add-to-cart-button--buy-now .add-to-cart-icon svg {
+    display: none;
+  }
+
+  .add-to-cart-block .add-to-cart-button--buy-now .add-to-cart-icon::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: currentColor;
+    -webkit-mask: url('{{ 'heart.svg' | asset_url }}') center / contain no-repeat;
+    mask: url('{{ 'heart.svg' | asset_url }}') center / contain no-repeat;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {

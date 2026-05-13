@@ -77,18 +77,16 @@
     height: 1rem;
   }
 
-  .add-to-cart-block .add-to-cart-button--buy-now .add-to-cart-icon svg {
+  .add-to-cart-block .add-to-cart__added {
     display: none;
   }
 
-  .add-to-cart-block .add-to-cart-button--buy-now .add-to-cart-icon::before {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 100%;
-    background-color: currentColor;
-    -webkit-mask: url('{{ 'heart.svg' | asset_url }}') center / contain no-repeat;
-    mask: url('{{ 'heart.svg' | asset_url }}') center / contain no-repeat;
+  .add-to-cart-block .add-to-cart-button[data-added='true'] .add-to-cart-text {
+    clip-path: none;
+    filter: none;
+    opacity: 1;
+    translate: 0;
+    animation: none;
   }
 {% endstylesheet %}
 

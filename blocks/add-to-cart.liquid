@@ -18,7 +18,11 @@
 <span
   class="add-to-cart-block"
   {{ block.shopify_attributes }}
-  style="--add-to-cart-font-case: {{ settings.button_text_case }};"
+  style="
+    --add-to-cart-font-case: {{ settings.button_text_case }};
+    --buy-now-text-size: {{ block.settings.buy_now_text_size }}px;
+    --buy-now-icon-size: {{ block.settings.buy_now_icon_size }}px;
+  "
 >
   {% render 'add-to-cart-button',
     id: buy_now_id,
@@ -59,7 +63,7 @@
     padding-inline: 1.4rem;
     border-radius: 999px;
     box-shadow: 0 10px 24px rgb(156 169 200 / 0.28);
-    font-size: 1rem;
+    font-size: var(--buy-now-text-size, 16px);
     font-weight: 600;
   }
 
@@ -74,8 +78,8 @@
   }
 
   .add-to-cart-block .add-to-cart-button--buy-now .add-to-cart-icon {
-    width: 1rem;
-    height: 1rem;
+    width: var(--buy-now-icon-size, 16px);
+    height: var(--buy-now-icon-size, 16px);
   }
 
   .add-to-cart-block .add-to-cart__added {
@@ -117,6 +121,26 @@
       "id": "buy_now_icon_svg",
       "label": "Buy it now icon SVG",
       "info": "Paste SVG markup to replace the Buy it Now button icon."
+    },
+    {
+      "type": "range",
+      "id": "buy_now_text_size",
+      "label": "Buy it now text size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "buy_now_icon_size",
+      "label": "Buy it now icon size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
     }
   ]
 }

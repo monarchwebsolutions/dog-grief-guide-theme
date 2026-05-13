@@ -58,6 +58,9 @@
             {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
           {%- endif -%}
         </span>
+        {% if buy_now %}
+          <span aria-hidden="true" class="add-to-cart-spinner"></span>
+        {% endif %}
       {% endif %}
       <span class="add-to-cart-text__content{% if icon_only_on_mobile %} is-visually-hidden-mobile{% endif %}">
         <span>
@@ -115,6 +118,25 @@
     animation-fill-mode: forwards;
     transition: width var(--animation-speed) var(--animation-easing),
       opacity var(--animation-speed) var(--animation-easing);
+  }
+
+  .add-to-cart-spinner {
+    display: none;
+    width: 1em;
+    height: 1em;
+    flex: 0 0 auto;
+    border: 0.12em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+  }
+
+  .add-to-cart-button[data-buy-now-loading='true'] .add-to-cart-icon {
+    display: none;
+  }
+
+  .add-to-cart-button[data-buy-now-loading='true'] .add-to-cart-spinner {
+    display: block;
+    animation: add-to-cart-spinner-rotate 0.7s linear infinite;
   }
 
   .add-to-cart__added {
@@ -251,6 +273,12 @@
     to {
       opacity: var(--atc-opacity, 1);
       translate: 0px var(--atc-destination, 0px);
+    }
+  }
+
+  @keyframes add-to-cart-spinner-rotate {
+    to {
+      transform: rotate(360deg);
     }
   }
 

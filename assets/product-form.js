@@ -281,10 +281,18 @@ class ProductFormComponent extends Component {
     const { addToCartTextError } = this.refs;
     // Stop default behaviour from the browser
     event.preventDefault();
+    const submitter = event instanceof SubmitEvent && event.submitter instanceof HTMLElement ? event.submitter : null;
     const submittedByBuyNow =
-      event instanceof SubmitEvent && event.submitter instanceof HTMLElement
-        ? event.submitter.matches('[data-buy-now="true"]')
-        : false;
+      submitter ? submitter.matches('[data-buy-now="true"]') : false;
+    const setBuyNowLoading = (isLoading) => {
+      if (!submitter || !submittedByBuyNow) return;
+
+      if (isLoading) {
+        submitter.setAttribute('data-buy-now-loading', 'true');
+      } else {
+        submitter.removeAttribute('data-buy-now-loading');
+      }
+    };
 
     if (this.#timeout) clearTimeout(this.#timeout);
 
@@ -299,6 +307,8 @@ class ProductFormComponent extends Component {
     );
     if (anyButtonDisabled) return;
 
+    setBuyNowLoading(true);
+
     // Send the add to cart information to the cart
     const form = this.querySelector('form');
 
@@ -312,6 +322,8 @@ class ProductFormComponent extends Component {
       const validation = this.refs.quantitySelector.canAddToCart();
 
       if (!validation.canAdd) {
+        setBuyNowLoading(false);
+
         // Disable ALL add-to-cart buttons
         for (const container of allAddToCartContainers) {
           container.disable();
@@ -354,8 +366,12 @@ class ProductFormComponent extends Component {
     if (giftnoteForm?.beforeSubmit) {
       try {
         const prepared = await giftnoteForm.beforeSubmit();
-        if (!prepared) return;
+        if (!prepared) {
+          setBuyNowLoading(false);
+          return;
+        }
       } catch (error) {
+        setBuyNowLoading(false);
         const message = error instanceof Error ? error.message : 'Something went wrong. Please try again.';
 
         if (addToCartTextError) {
@@ -404,6 +420,8 @@ class ProductFormComponent extends Component {
       .then((response) => response.json())
       .then(async (response) => {
         if (response.status) {
+          setBuyNowLoading(false);
+
           this.dispatchEvent(
             new CartErrorEvent(form.getAttribute('id') || '', response.message, response.description, response.errors)
           );
@@ -486,9 +504,14 @@ class ProductFormComponent extends Component {
         }
       })
       .catch((error) => {
+        setBuyNowLoading(false);
         console.error(error);
       })
       .finally(() => {
+        if (!submittedByBuyNow) {
+          setBuyNowLoading(false);
+        }
+
         cartPerformance.measureFromEvent('add:user-action', event);
       });
   }

@@ -8,6 +8,8 @@
   @param {string} [class] - Additional CSS classes to apply to the button.
   @param {string} [id] - The ID attribute for the button.
   @param {string} [data_testid] - The data-testid attribute for testing.
+  @param {boolean} [buy_now] - Whether this button should trigger buy-now checkout behavior.
+  @param {string} [icon_svg] - Optional raw SVG markup to replace the default icon.
 {%- enddoc -%}
 
 {%- liquid
@@ -32,6 +34,9 @@
     ref="addToCartButton"
     on:click="/handleClick"
     class="button {{ class }}"
+    {% if buy_now %}
+      data-buy-now="true"
+    {% endif %}
     {% if data_testid %}
       data-testid="{{ data_testid }}"
     {% endif %}
@@ -45,9 +50,13 @@
       {% if can_add_to_cart %}
         <span
           aria-hidden="true"
-          class="svg-wrapper add-to-cart-icon"
+          class="svg-wrapper add-to-cart-icon{% if icon_svg != blank %} add-to-cart-icon--custom{% endif %}"
         >
-          {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
+          {%- if icon_svg != blank -%}
+            {{- icon_svg -}}
+          {%- else -%}
+            {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
+          {%- endif -%}
         </span>
       {% endif %}
       <span class="add-to-cart-text__content{% if icon_only_on_mobile %} is-visually-hidden-mobile{% endif %}">
@@ -243,5 +252,11 @@
       opacity: var(--atc-opacity, 1);
       translate: 0px var(--atc-destination, 0px);
     }
+  }
+
+  .add-to-cart-icon--custom svg {
+    width: 100%;
+    height: 100%;
+    display: block;
   }
 {% endstylesheet %}

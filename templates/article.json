@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "section": {
       "type": "main-blog-post",
@@ -21,7 +22,7 @@
             "max_width": "normal",
             "alignment": "center",
             "type_preset": "h2",
-            "font": "var(--font-primary--family)",
+            "font": "'Playfair Display', var(--font-heading--family)",
             "font_size": "",
             "line_height": "normal",
             "letter_spacing": "normal",
@@ -54,11 +55,10 @@
           "blocks": {}
         },
         "blog-post-image": {
-          "type": "image",
-          "name": "Featured image",
+          "type": "_blog-post-featured-image",
           "static": true,
           "settings": {
-            "image_ratio": "landscape",
+            "image_ratio": "adapt",
             "width": "fill",
             "custom_width": 100,
             "width_mobile": "fill",
@@ -89,9 +89,22 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "article_link_cta": {
+      "type": "article-link-cta",
+      "settings": {
+        "text": "Learn more about The Dog Grief Guide",
+        "url": "shopify://products/the-dog-grief-guide",
+        "font_size_desktop": 24,
+        "font_size_mobile": 16,
+        "font_color": "#636e72",
+        "padding-block-start": 0,
+        "padding-block-end": 80
+      }
     }
   },
   "order": [
-    "section"
+    "section",
+    "article_link_cta"
   ]
 }

@@ -1,0 +1,130 @@
+<div class="section article-link-cta">
+  <div
+    class="section-content-wrapper spacing-style"
+    style="{% render 'spacing-style', settings: section.settings %}"
+  >
+    {%- if section.settings.url != blank and section.settings.text != blank -%}
+      <div class="article-link-cta__inner">
+        <a
+          class="article-link-cta__link"
+          href="{{ section.settings.url }}"
+          style="
+            --article-link-cta-font-size-desktop: {{ section.settings.font_size_desktop }}px;
+            --article-link-cta-font-size-mobile: {{ section.settings.font_size_mobile }}px;
+            --article-link-cta-color: {{ section.settings.font_color }};
+          "
+        >
+          <span>{{ section.settings.text }}</span>
+          <span aria-hidden="true" class="article-link-cta__arrow">&rarr;</span>
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .article-link-cta__inner {
+    display: flex;
+    justify-content: center;
+  }
+
+  .article-link-cta__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-align: center;
+    font-size: var(--article-link-cta-font-size-desktop, 16px);
+    font-weight: 500;
+    color: var(--article-link-cta-color, var(--dgg-black));
+    text-decoration: none;
+  }
+
+  .article-link-cta__link:hover {
+    color: var(--dgg-blue);
+  }
+
+  .article-link-cta__arrow {
+    line-height: 1;
+  }
+
+  @media screen and (max-width: 749px) {
+    .article-link-cta__link {
+      font-size: var(--article-link-cta-font-size-mobile, var(--article-link-cta-font-size-desktop, 16px));
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Article Link CTA",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Learn more about The Dog Grief Guide"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "URL"
+    },
+    {
+      "type": "range",
+      "id": "font_size_desktop",
+      "label": "Desktop font size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Mobile font size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "font_color",
+      "label": "Font color",
+      "default": "#2d3436"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article Link CTA"
+    }
+  ]
+}
+{% endschema %}

@@ -1,7 +1,7 @@
 
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
-<div class="section color-{{ section.settings.color_scheme }}">
+<div class="section main-blog-post color-{{ section.settings.color_scheme }}">
   <div
     class="
       spacing-style
@@ -15,7 +15,7 @@
       {% render 'spacing-style', settings: section.settings %}
     "
   >
-    <header>
+    <header class="main-blog-post__header">
       {%- content_for 'block', id: 'blog-post-title', type: 'text' %}
       {%- content_for 'block', id: 'blog-post-details', type: '_blog-post-info-text' %}
     </header>
@@ -64,6 +64,34 @@
 </script>
 
 {% stylesheet %}
+  .main-blog-post__header :is(h1, h2, h3, h4),
+  .blog-post-content :is(h1, h2, h3, h4),
+  .blog-post-comments-container h2 {
+    font-family: 'Playfair Display', var(--font-heading--family);
+    color: var(--dgg-black);
+  }
+
+  .main-blog-post__header .text-block h1,
+  .main-blog-post__header .text-block.h2 > h1,
+  .main-blog-post__header .text-block.h2 > * {
+    font-family: 'Playfair Display', var(--font-heading--family) !important;
+    color: var(--dgg-black) !important;
+    font-weight: 500 !important;
+  }
+
+  .blog-post-content h2,
+  .blog-post-comments-container h2 {
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .blog-post-content h3 {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.25;
+  }
+
   .blog-post-comments-container {
     width: 100%;
     max-width: var(--normal-content-width);

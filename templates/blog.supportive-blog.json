@@ -84,6 +84,23 @@
               },
               "blocks": {}
             },
+            "content": {
+              "type": "_blog-post-description",
+              "static": true,
+              "settings": {
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 16,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            },
             "image": {
               "type": "_blog-post-image",
               "static": true,
@@ -103,14 +120,94 @@
       "block_order": [
         "title"
       ],
+      "disabled": true,
       "settings": {
         "color_scheme": "",
         "padding-block-start": 0,
         "padding-block-end": 48
       }
+    },
+    "page_header_h8AmFa": {
+      "type": "page-header",
+      "name": "Page Header",
+      "settings": {
+        "pill_icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-book-open text-[#E8C547]\"><path d=\"M12 7v14\"></path><path d=\"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z\"></path></svg>",
+        "pill_text": "Words of Comfort",
+        "header_text": "Supportive Blog",
+        "subheader_text": "A collection of gentle words, practical wisdom, and heartfelt support for those walking the path of pet loss."
+      }
+    },
+    "supportive_featured_article_hx7A4f": {
+      "type": "supportive-featured-article",
+      "name": "Featured Article",
+      "settings": {
+        "article": "supportive-blog/how-long-does-dog-grief-last",
+        "pill_text": "Featured",
+        "read_more_label": "Read More",
+        "excerpt_word_count": 34,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "supportive_article_grid_hjK82m": {
+      "type": "supportive-article-grid",
+      "name": "Article Grid",
+      "settings": {
+        "blog": "",
+        "post_limit": 6,
+        "excerpt_word_count": 18,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "custom_section_supportive_blog_join": {
+      "type": "custom-section",
+      "name": "Custom Section",
+      "settings": {
+        "content_key": "join-our-community",
+        "bg_type": "solid",
+        "background_color": "#fdf8f3",
+        "center_content": true,
+        "background_gradient": "linear-gradient(135deg, #9FAECC 0%, #E8C547 100%)",
+        "gap_desktop": 24,
+        "gap_mobile": 16,
+        "pt_desktop": 64,
+        "prl_desktop": 24,
+        "pb_desktop": 120,
+        "pt_mobile": 80,
+        "prl_mobile": 16,
+        "pb_mobile": 100,
+        "additional_css": "",
+        "column_1_align_desktop": "top",
+        "column_1_html": "",
+        "column_1_image_first": "image_first",
+        "column_1_img_pt": 0,
+        "column_1_img_prl": 0,
+        "column_1_img_pb": 0,
+        "show_column_2": false,
+        "column_2_align_desktop": "top",
+        "column_2_html": "<h2>Column 2</h2>\n<p>Add HTML here.</p>",
+        "column_2_image_first": "image_first",
+        "column_2_img_pt": 0,
+        "column_2_img_prl": 0,
+        "column_2_img_pb": 0,
+        "show_column_3": false,
+        "column_3_align_desktop": "top",
+        "column_3_html": "<h2>Column 3</h2>\n<p>Add HTML here.</p>",
+        "column_3_image_first": "image_first",
+        "column_3_img_pt": 0,
+        "column_3_img_prl": 0,
+        "column_3_img_pb": 0
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "page_header_h8AmFa",
+    "supportive_featured_article_hx7A4f",
+    "supportive_article_grid_hjK82m",
+    "custom_section_supportive_blog_join"
   ]
 }

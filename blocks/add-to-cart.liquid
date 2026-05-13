@@ -11,21 +11,93 @@
 {% liquid
   assign class = 'add-to-cart-button ' | append: block.settings.style_class
   assign id = 'BuyButtons-ProductSubmitButton-' | append: block.id
+  assign buy_now_class = 'add-to-cart-button add-to-cart-button--buy-now button-secondary'
+  assign buy_now_id = 'BuyButtons-ProductBuyNowButton-' | append: block.id
 %}
 
 <span
+  class="add-to-cart-block"
   {{ block.shopify_attributes }}
-  style="--add-to-cart-font-case: {{ settings.button_text_case }};"
+  style="
+    --add-to-cart-font-case: {{ settings.button_text_case }};
+    --buy-now-text-size: {{ block.settings.buy_now_text_size }}px;
+    --buy-now-icon-size: {{ block.settings.buy_now_icon_size }}px;
+  "
 >
-  {% render 'add-to-cart-button',
-    id: id,
-    class: class,
-    can_add_to_cart: can_add_to_cart,
-    product: closest.product,
-    add_to_cart_text: add_to_cart_text,
-    data_testid: 'standalone-add-to-cart'
-  %}
+  {% unless block.settings.hide_buy_now_button %}
+    {% render 'add-to-cart-button',
+      id: buy_now_id,
+      class: buy_now_class,
+      can_add_to_cart: can_add_to_cart,
+      product: closest.product,
+      add_to_cart_text: 'Buy it Now',
+      data_testid: 'standalone-buy-it-now',
+      buy_now: true,
+      icon_svg: block.settings.buy_now_icon_svg
+    %}
+  {% endunless %}
+
+  {% unless block.settings.hide_add_to_cart_button %}
+    {% render 'add-to-cart-button',
+      id: id,
+      class: class,
+      can_add_to_cart: can_add_to_cart,
+      product: closest.product,
+      add_to_cart_text: add_to_cart_text,
+      data_testid: 'standalone-add-to-cart'
+    %}
+  {% endunless %}
 </span>
+
+{% stylesheet %}
+  .add-to-cart-block {
+    display: grid;
+    gap: 0.85rem;
+    width: 100%;
+  }
+
+  .add-to-cart-block .add-to-cart-button--buy-now {
+    --button-color: #ffffff;
+    --button-background-color: #9ca9c8;
+    --button-border-color: transparent;
+    --button-border-width: 0;
+    width: 100%;
+    min-height: 3.5rem;
+    padding-block: 1rem;
+    padding-inline: 1.4rem;
+    border-radius: 999px;
+    box-shadow: 0 10px 24px rgb(156 169 200 / 0.28);
+    font-size: var(--buy-now-text-size, 16px);
+    font-weight: 600;
+  }
+
+  .add-to-cart-block .add-to-cart-button--buy-now:hover:not([disabled]) {
+    --button-color: #ffffff;
+    --button-background-color: #8f9dbc;
+    --button-border-color: transparent;
+  }
+
+  .add-to-cart-block .add-to-cart-button--buy-now .add-to-cart-text {
+    gap: 0.65rem;
+  }
+
+  .add-to-cart-block .add-to-cart-button--buy-now .add-to-cart-icon {
+    width: var(--buy-now-icon-size, 16px);
+    height: var(--buy-now-icon-size, 16px);
+  }
+
+  .add-to-cart-block .add-to-cart__added {
+    display: none;
+  }
+
+  .add-to-cart-block .add-to-cart-button[data-added='true'] .add-to-cart-text {
+    clip-path: none;
+    filter: none;
+    opacity: 1;
+    translate: 0;
+    animation: none;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -47,6 +119,44 @@
         }
       ],
       "default": "button-secondary"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_buy_now_button",
+      "label": "Hide Buy it Now button",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_add_to_cart_button",
+      "label": "Hide Add to Cart button",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "buy_now_icon_svg",
+      "label": "Buy it now icon SVG",
+      "info": "Paste SVG markup to replace the Buy it Now button icon."
+    },
+    {
+      "type": "range",
+      "id": "buy_now_text_size",
+      "label": "Buy it now text size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "buy_now_icon_size",
+      "label": "Buy it now icon size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
     }
   ]
 }

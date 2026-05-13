@@ -63,10 +63,8 @@
           ref="variantId"
           value="{{ product.selected_or_first_available_variant.id }}"
         >
-        {%- if block_settings.giftnote_embed_form -%}
-          {%- render 'giftnote-embedded-form', product: product, section: section, block: block -%}
-        {%- endif -%}
-        {%- if block_settings.gift_card_form and product.gift_card? and block_settings.giftnote_embed_form == false -%}
+        {%- render 'giftnote-embedded-form', product: product, section: section, block: block -%}
+        {%- if block_settings.gift_card_form and product.gift_card? -%}
           {%- render 'gift-card-recipient-form', product: product, form: form, section: section, block: block -%}
         {%- endif -%}
         <div
@@ -208,16 +206,14 @@
               </div>
             </volume-pricing>
           {%- endif -%}
-          {%- unless block_settings.gift_card_form and product.gift_card? and block_settings.giftnote_embed_form == false -%}
-            <span
-              class="product-form-text__error hidden"
-              ref="addToCartTextError"
-            >
-              <span class="svg-wrapper product-form-icon--error">
-                {{- 'icon-error.svg' | inline_asset_content -}}
-              </span>
+          <span
+            class="product-form-text__error hidden"
+            ref="addToCartTextError"
+          >
+            <span class="svg-wrapper product-form-icon--error">
+              {{- 'icon-error.svg' | inline_asset_content -}}
             </span>
-          {%- endunless -%}
+          </span>
 
           {% content_for 'block',
             type: 'add-to-cart',
@@ -701,16 +697,6 @@
       "id": "gift_card_form",
       "label": "t:settings.gift_card_form",
       "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "giftnote_embed_form",
-      "label": "Enable embedded Giftnote form",
-      "default": true
-    },
-    {
-      "type": "paragraph",
-      "content": "Shows an embedded, opt-in gifting form on the product page and maps Giftnote fields to Shopify cart attributes or line item properties."
     },
     {
       "type": "paragraph",

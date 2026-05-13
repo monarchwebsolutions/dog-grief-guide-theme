@@ -1,0 +1,249 @@
+{% liquid
+  assign selected_article = section.settings.article
+
+  if request.visual_preview_mode and selected_article == blank and blogs.all.articles_count > 0
+    assign selected_article = blogs.all.articles.first
+  endif
+
+  assign pill_text = section.settings.pill_text | default: 'Featured'
+  assign read_more_label = section.settings.read_more_label | default: 'Read More'
+  assign excerpt_word_count = section.settings.excerpt_word_count | default: 34
+
+  if selected_article != blank
+    assign article_title = selected_article.title
+
+    if selected_article.excerpt != blank
+      assign article_summary = selected_article.excerpt | strip_html
+    else
+      assign article_summary = selected_article.content | strip_html | truncatewords: excerpt_word_count
+    endif
+
+    assign article_url = selected_article.url
+  else
+    assign article_title = 'Your featured article title appears here'
+    assign article_summary = 'Select a blog article to highlight it here. The section will automatically show the article title, excerpt, and link.'
+    assign article_url = '#'
+  endif
+%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<section
+  class="supportive-featured-article section section--page-width color-{{ section.settings.color_scheme }} spacing-style"
+  style="{% render 'spacing-style', settings: section.settings %}"
+  {{ section.shopify_attributes }}
+>
+  <div class="supportive-featured-article__card">
+    <span class="supportive-featured-article__pill">
+      {{ pill_text }}
+    </span>
+
+    <div class="supportive-featured-article__content">
+      <h2 class="supportive-featured-article__title">
+        {{ article_title }}
+      </h2>
+
+      <div class="supportive-featured-article__summary rte">
+        <p>{{ article_summary }}</p>
+      </div>
+
+      <a
+        class="supportive-featured-article__link"
+        href="{{ article_url }}"
+        {% if selected_article == blank %}
+          aria-disabled="true"
+        {% endif %}
+      >
+        <span>{{ read_more_label }}</span>
+        <span class="supportive-featured-article__arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .supportive-featured-article__card {
+    display: grid;
+    gap: 2.2rem;
+    padding: clamp(2rem, 3vw, 3.4rem);
+    border-radius: 2.25rem;
+    background: linear-gradient(90deg, #96a4c0 0%, #8e9cb9 100%);
+    color: #fff;
+    box-shadow: 0 18px 36px rgb(86 99 134 / 0.12);
+  }
+
+  .supportive-featured-article__pill {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.16);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .supportive-featured-article__content {
+    display: grid;
+    gap: 1.65rem;
+    max-width: 62rem;
+  }
+
+  .supportive-featured-article__title {
+    margin: 0;
+    color: inherit;
+    font-family: 'Playfair Display', var(--font-heading--family);
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+  }
+
+  .supportive-featured-article__summary {
+    max-width: 52rem;
+    color: rgb(255 255 255 / 0.96);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.45;
+  }
+
+  .supportive-featured-article__summary p {
+    margin: 0;
+  }
+
+  .supportive-featured-article__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+    width: fit-content;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    transition: opacity var(--animation-speed) var(--animation-easing);
+  }
+
+  .supportive-featured-article__link:hover {
+    opacity: 0.82;
+    color: #fff;
+  }
+
+  .supportive-featured-article__link[aria-disabled='true'] {
+    pointer-events: none;
+    opacity: 0.65;
+  }
+
+  .supportive-featured-article__arrow {
+    font-size: 1.3em;
+    transform: translateY(-0.04em);
+  }
+
+  @media screen and (max-width: 749px) {
+    .supportive-featured-article__card {
+      gap: 1.5rem;
+      padding: 1.5rem;
+      border-radius: 1.5rem;
+    }
+
+    .supportive-featured-article__pill {
+      min-height: 2.25rem;
+      padding: 4px 12px;
+      font-size: 14px;
+    }
+
+    .supportive-featured-article__content {
+      gap: 1.1rem;
+    }
+
+    .supportive-featured-article__title {
+      font-size: 30px;
+      line-height: 1.06;
+    }
+
+    .supportive-featured-article__summary {
+      font-size: 16px;
+    }
+
+    .supportive-featured-article__link {
+      font-size: 16px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Featured Article",
+  "tag": "section",
+  "class": "supportive-featured-article-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "article",
+      "id": "article",
+      "label": "Article"
+    },
+    {
+      "type": "text",
+      "id": "pill_text",
+      "label": "Pill text",
+      "default": "Featured"
+    },
+    {
+      "type": "text",
+      "id": "read_more_label",
+      "label": "Read more label",
+      "default": "Read More"
+    },
+    {
+      "type": "range",
+      "id": "excerpt_word_count",
+      "label": "Fallback excerpt length",
+      "min": 12,
+      "max": 60,
+      "step": 1,
+      "default": 34,
+      "info": "Used only when the selected article has no excerpt."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Article"
+    }
+  ]
+}
+{% endschema %}

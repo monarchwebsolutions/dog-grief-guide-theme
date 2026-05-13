@@ -300,7 +300,6 @@
                 "stacking": true,
                 "show_pickup_availability": false,
                 "gift_card_form": true,
-                "giftnote_embed_form": true,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
@@ -316,10 +315,14 @@
                 },
                 "add-to-cart": {
                   "type": "add-to-cart",
-                  "disabled": true,
                   "static": true,
                   "settings": {
-                    "style_class": "button"
+                    "style_class": "button",
+                    "hide_buy_now_button": false,
+                    "hide_add_to_cart_button": true,
+                    "buy_now_icon_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-heart mr-2\"><path d=\"M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z\"></path></svg>",
+                    "buy_now_text_size": 20,
+                    "buy_now_icon_size": 20
                   },
                   "blocks": {}
                 },
@@ -383,7 +386,7 @@
         }
       },
       "custom_css": [
-        ".add-to-cart-button {display: none;}"
+        ".add-to-cart-button {/* display: none; */}"
       ],
       "settings": {
         "content_width": "content-center-aligned",

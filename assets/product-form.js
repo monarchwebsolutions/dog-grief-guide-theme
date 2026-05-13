@@ -281,6 +281,10 @@ class ProductFormComponent extends Component {
     const { addToCartTextError } = this.refs;
     // Stop default behaviour from the browser
     event.preventDefault();
+    const submittedByBuyNow =
+      event instanceof SubmitEvent && event.submitter instanceof HTMLElement
+        ? event.submitter.matches('[data-buy-now="true"]')
+        : false;
 
     if (this.#timeout) clearTimeout(this.#timeout);
 
@@ -448,6 +452,11 @@ class ProductFormComponent extends Component {
           }
 
           if (!id) throw new Error('Form ID is required');
+
+          if (submittedByBuyNow) {
+            window.location.assign('/checkout');
+            return;
+          }
 
           // Add aria-live region to inform screen readers that the item was added
           // Get the added text from any add-to-cart button

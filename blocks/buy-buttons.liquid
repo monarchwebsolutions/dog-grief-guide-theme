@@ -36,7 +36,7 @@
 %}
 
 <span
-  class="buy-buttons-block buy-buttons-block--{{ block.id }}{% if block_settings.dgg_add_to_cart_style %} buy-buttons-block--dgg-atc{% endif %}"
+  class="buy-buttons-block buy-buttons-block--{{ block.id }}"
   {{ block.shopify_attributes }}
 >
   {%- if product != blank -%}
@@ -455,55 +455,6 @@
     text-transform: var(--button-text-case-secondary);
   }
 
-  .buy-buttons-block--dgg-atc .product-form-buttons > *:has(.add-to-cart-button) {
-    flex: 0 0 auto;
-    width: auto;
-  }
-
-  .buy-buttons-block--dgg-atc .add-to-cart-button.button-secondary {
-    --button-color: #ffffff;
-    --button-background-color: #9ca9c8;
-    --button-border-color: transparent;
-    width: auto;
-    min-width: min(100%, 12.75rem);
-    min-height: 3.5rem;
-    padding-block: 1rem;
-    padding-inline: 1.4rem;
-    border-radius: 999px;
-    box-shadow: 0 10px 24px rgb(156 169 200 / 0.28);
-    font-size: 1rem;
-    font-weight: 600;
-  }
-
-  .buy-buttons-block--dgg-atc .add-to-cart-button.button-secondary:hover:not([disabled]) {
-    --button-color: #ffffff;
-    --button-background-color: #8f9dbc;
-    --button-border-color: transparent;
-  }
-
-  .buy-buttons-block--dgg-atc .add-to-cart-button .add-to-cart-text {
-    gap: 0.65rem;
-  }
-
-  .buy-buttons-block--dgg-atc .add-to-cart-button .add-to-cart-icon {
-    width: 1rem;
-    height: 1rem;
-  }
-
-  .buy-buttons-block--dgg-atc .add-to-cart-button .add-to-cart-icon svg {
-    display: none;
-  }
-
-  .buy-buttons-block--dgg-atc .add-to-cart-button .add-to-cart-icon::before {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 100%;
-    background-color: currentColor;
-    -webkit-mask: url('{{ 'heart.svg' | asset_url }}') center / contain no-repeat;
-    mask: url('{{ 'heart.svg' | asset_url }}') center / contain no-repeat;
-  }
-
   .product-form-text__error {
     display: flex;
     align-items: flex-start;
@@ -746,12 +697,6 @@
       "id": "gift_card_form",
       "label": "t:settings.gift_card_form",
       "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "dgg_add_to_cart_style",
-      "label": "Use Dog Grief Guide add to cart style",
-      "default": false
     },
     {
       "type": "paragraph",

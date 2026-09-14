@@ -1,5 +1,5 @@
-{% assign has_html = html != blank %}
-{% assign has_image = image != blank %}
+{% assign has_html = html %}
+{% assign has_image = image %}
 
 {% capture image_markup %}
   {% if has_image %}
@@ -34,3 +34,16 @@
     {{ image_markup }}
   {% endif %}
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% assign has_html = html != blank %}"
+  to: "{% assign has_html = html %}"
+  position: 0..28
+- from: "{% assign has_image = image != blank %}"
+  to: "{% assign has_image = image %}"
+  position: 29..59
+{% endcomment %}

@@ -101,12 +101,14 @@
   content="{{ og_description | escape }}"
 >
 
-<title>
-  {{ page_title }}
+{%- comment -%} Built on one line so the title carries no line breaks or padding. {%- endcomment -%}
+{%- capture dgg_title -%}
+  {{- page_title | strip -}}
   {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
   {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
   {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
-</title>
+{%- endcapture -%}
+<title>{{ dgg_title | strip_newlines | strip }}</title>
 
 <link
   rel="canonical"
@@ -119,3 +121,11 @@
     content="{{ page_description | escape }}"
   >
 {% endif %}
+
+{%- comment -%} The frontpage collection is a thin copy of the homepage. Keep it out of search. {%- endcomment -%}
+{%- if request.page_type == 'collection' and collection.handle == 'frontpage' -%}
+  <meta
+    name="robots"
+    content="noindex, follow"
+  >
+{%- endif -%}

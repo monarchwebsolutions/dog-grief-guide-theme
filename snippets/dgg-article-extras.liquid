@@ -1,0 +1,63 @@
+{%- comment -%}
+  Author bio under every post, plus FAQPage schema read from the article
+  metafield custom.faq (JSON list of {question, answer}). The visible FAQ
+  lives in the post body; the schema must match it.
+{%- endcomment -%}
+<aside class="dgg-author-bio">
+  <p class="dgg-author-bio__name">About the author</p>
+  <p>
+    Nate Aframian wrote <a href="/products/the-dog-grief-guide-1">The Dog Grief Guide</a> after losing his dog Oxmo, his
+    companion of almost six years. He built the guide, and this blog, so people grieving a dog feel less alone.
+  </p>
+</aside>
+
+{%- assign dgg_faq = article.metafields.custom.faq.value -%}
+{%- if dgg_faq and dgg_faq.size > 0 -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- for item in dgg_faq -%}
+          {
+            "@type": "Question",
+            "name": {{ item.question | json }},
+            "acceptedAnswer": { "@type": "Answer", "text": {{ item.answer | json }} }
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": {{ article.title | json }},
+    "url": "{{ shop.url }}{{ article.url }}",
+    "datePublished": "{{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' }}",
+    "dateModified": "{{ article.updated_at | date: '%Y-%m-%dT%H:%M:%S%z' }}",
+    {%- if article.image %}"image": "https:{{ article.image | image_url: width: 1200 }}",{% endif %}
+    "description": {{ article.excerpt_or_content | strip_html | truncate: 300 | json }},
+    "mainEntityOfPage": "{{ shop.url }}{{ article.url }}",
+    "author": { "@type": "Person", "@id": "{{ shop.url }}/#nate-aframian", "name": "Nate Aframian", "url": "{{ shop.url }}/pages/about" },
+    "publisher": { "@type": "Organization", "name": {{ shop.name | json }}, "url": "{{ shop.url }}" }
+  }
+</script>
+
+<style>
+  .dgg-author-bio {
+    width: 100%;
+    max-width: var(--normal-content-width);
+    margin: 0 auto;
+    padding-top: 24px;
+    border-top: 1px solid rgb(var(--color-foreground-rgb) / 0.15);
+    font-size: var(--font-size--body-sm);
+  }
+  .dgg-author-bio__name {
+    font-family: 'Playfair Display', var(--font-heading--family);
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+</style>

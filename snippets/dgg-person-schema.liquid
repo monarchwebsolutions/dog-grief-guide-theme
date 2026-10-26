@@ -1,0 +1,23 @@
+{%- comment -%}
+  Site-wide Person schema for Nate Aframian (E-E-A-T). Bio text pending Nate's approval.
+{%- endcomment -%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": "{{ shop.url }}/#nate-aframian",
+    "name": "Nate Aframian",
+    "jobTitle": "Author",
+    "description": "Author of The Dog Grief Guide, a journal and companion book he wrote after losing his dog Oxmo.",
+    "url": "{{ shop.url }}/pages/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": {{ shop.name | json }},
+      "url": "{{ shop.url }}"
+    },
+    "sameAs": [
+      "https://www.instagram.com/doggriefguide/",
+      "https://www.tiktok.com/@the.dog.grief.guide"
+    ]
+  }
+</script>

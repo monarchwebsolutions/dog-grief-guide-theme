@@ -28,6 +28,9 @@
     {% comment %} Dynamic area for @app blocks only, at the bottom {% endcomment %}
     {% content_for 'blocks' %}
 
+    {% comment %} Author bio, FAQ schema and BlogPosting schema linked to Nate's Person schema {% endcomment %}
+    {% render 'dgg-article-extras', article: article %}
+
     {% if blog.comments_enabled? %}
       <div class="blog-post-comments-container">
         <h2 class="h3">{{- 'blogs.article.comments_heading' | t: count: article.comments_count -}}</h2>
@@ -58,10 +61,6 @@
     {% endif %}
   </div>
 </div>
-
-<script type="application/ld+json">
-  {{ article | structured_data }}
-</script>
 
 {% stylesheet %}
   .main-blog-post__header :is(h1, h2, h3, h4),
